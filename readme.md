@@ -18,10 +18,6 @@ The code uses Java WPILib.
 * [Git Tutorial](https://learngitbranching.js.org/)
 * [Java Tutorial](https://youtube.com/playlist?list=PLZPZq0r_RZOMhCAyywfnYLlrjiVOkdAI1&si=ImrjG_c4-wThJqy3)
 
-# Useful Resources:
-* [Crescendo 2024 Main Electrical Components](https://docs.google.com/spreadsheets/d/1jhis3_a5TAV7oP3p6C41bP5yMevQPRnBtGeEiesHzKM)
-* [Crescendo 2024 Hardware/Software Calibration](https://docs.google.com/document/d/1msJO2dKCxqzbMlSSOtfs8W_ITjltEbtXaQBxc-CpNMo)
-
 # Getting Started
 1. Install [WPILib](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/index.html)
 1. Install Git
