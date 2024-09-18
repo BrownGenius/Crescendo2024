@@ -1,0 +1,3 @@
+# Useful Resources:
+* [PathPlanner](https://pathplanner.dev/pathplanner-gui.html)
+* [Crescendo 2024 Autonomous Routines](https://docs.google.com/document/d/1YG0RpWz_kYT4aMvY1ALhe9GsHA7w0coU_XH6KsEIKpw)
