@@ -1,4 +1,4 @@
-Swerve configuration files for each robot
+YAGSL swerve configuration files for each robot
 
 # Useful Resources
 * [YAGSL](https://yagsl.gitbook.io/yagsl)
