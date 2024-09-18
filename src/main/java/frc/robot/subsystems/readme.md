@@ -1,6 +1,10 @@
 Subsystem and IO interfaces and implementations
 
+# Useful Resources:
+* [Crescendo 2024 Hardware/Software Calibration](https://docs.google.com/document/d/1msJO2dKCxqzbMlSSOtfs8W_ITjltEbtXaQBxc-CpNMo)
+
 Subsystemts utilize the [AdvantageKit IO Layer](https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/RECORDING-INPUTS.md) paradigm.
+
 
 Each subsystem is implemented using the following breakdown.  Here, assume we have a mechanism called a "Gizmo":
 * Hardware IO
@@ -66,7 +70,3 @@ It is important to note that the *same* Hardware IO can be shared by completely 
 * LimitSwitchIO
 
 And then a subsystem can consist of 1 or more MotorIO instances and 1 or more LimitSwitchIO instances.
-
-# Useful Resources:
-* [Crescendo 2024 Main Electrical Components](https://docs.google.com/spreadsheets/d/1jhis3_a5TAV7oP3p6C41bP5yMevQPRnBtGeEiesHzKM)
-* [Crescendo 2024 Hardware/Software Calibration](https://docs.google.com/document/d/1msJO2dKCxqzbMlSSOtfs8W_ITjltEbtXaQBxc-CpNMo)
