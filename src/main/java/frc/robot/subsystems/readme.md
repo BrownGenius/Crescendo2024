@@ -1,8 +1,5 @@
 Subsystem and IO interfaces and implementations
 
-# Useful Resources:
-* [Crescendo 2024 Hardware/Software Calibration](https://docs.google.com/document/d/1msJO2dKCxqzbMlSSOtfs8W_ITjltEbtXaQBxc-CpNMo)
-
 Subsystemts utilize the [AdvantageKit IO Layer](https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/RECORDING-INPUTS.md) paradigm.
 
 

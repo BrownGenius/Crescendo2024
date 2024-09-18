@@ -2,6 +2,8 @@ The config directory is used to support multiple robot versions using the same c
 
 # Useful Resources:
 * [Crescendo 2024 Main Electrical Components](https://docs.google.com/spreadsheets/d/1jhis3_a5TAV7oP3p6C41bP5yMevQPRnBtGeEiesHzKM)
+* [Crescendo 2024 Hardware/Software Calibration](https://docs.google.com/document/d/1msJO2dKCxqzbMlSSOtfs8W_ITjltEbtXaQBxc-CpNMo)
+
 
 # 2024
 We had 3 different robots with different capabilities for dev/testing purposes:
