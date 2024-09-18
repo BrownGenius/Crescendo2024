@@ -1,5 +1,4 @@
 The config directory is used to support multiple robot versions using the same code base.
-
 # 2023
 We tried to support multiple robots using the same code base by:
    * Creating a JSON config file specific to each robot
