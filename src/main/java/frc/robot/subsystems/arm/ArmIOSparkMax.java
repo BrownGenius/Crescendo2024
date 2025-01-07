@@ -1,12 +1,12 @@
 package frc.robot.subsystems.arm;
 
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.SparkPIDController.ArbFFUnits;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,10 +16,10 @@ import frc.robot.config.RobotConfig.ArmConstants;
 
 public class ArmIOSparkMax implements ArmIO {
 
-  private final CANSparkMax motor;
+  private final SparkMax motor;
   private final RelativeEncoder relEncoder;
   private final DutyCycleEncoder absoluteEncoder;
-  private final SparkPIDController armPid;
+  private final SparkClosedLoopController armPid;
   public double lkP, lkI, lkD, lkIz, lkFF, lkMaxOutput, lkMinOutput, lmaxRPS;
 
   public ArmIOSparkMax(int id) {
@@ -35,7 +35,7 @@ public class ArmIOSparkMax implements ArmIO {
 
   public ArmIOSparkMax(int id, boolean inverted) {
     /* Instantiate 1x SparkMax motors and absolute encoder */
-    motor = new CANSparkMax(id, MotorType.kBrushless);
+    motor = new SparkMax(id, MotorType.kBrushless);
 
     // first thing we do to spark device is reset it to known defaults.
     motor.restoreFactoryDefaults();
@@ -169,8 +169,7 @@ public class ArmIOSparkMax implements ArmIO {
       SmartDashboard.putNumber("Arm/setPosition/degrees", degrees);
       SmartDashboard.putNumber("Arm/setPosition/ffVolts", ffVolts);
     }
-    armPid.setReference(
-        degrees, CANSparkMax.ControlType.kPosition, 0, ffVolts, ArbFFUnits.kVoltage);
+    armPid.setReference(degrees, SparkMax.ControlType.kPosition, 0, ffVolts, ArbFFUnits.kVoltage);
   }
 
   /** Run the arm motor at the specified voltage. */
@@ -202,12 +201,12 @@ public class ArmIOSparkMax implements ArmIO {
   public void setBrakeMode(boolean brake) {
     IdleMode mode;
     if (brake) {
-      mode = CANSparkMax.IdleMode.kBrake;
+      mode = SparkMax.IdleMode.kBrake;
       if (Constants.debugMode) {
         SmartDashboard.putString("Arm/Idle Mode", "kBrake");
       }
     } else {
-      mode = CANSparkMax.IdleMode.kCoast;
+      mode = SparkMax.IdleMode.kCoast;
       if (Constants.debugMode) {
         SmartDashboard.putString("Arm/Idle Mode", "kCoast");
       }

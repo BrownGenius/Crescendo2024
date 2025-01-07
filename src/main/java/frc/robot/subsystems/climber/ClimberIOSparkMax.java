@@ -1,9 +1,12 @@
 package frc.robot.subsystems.climber;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.util.Units;
 
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,24 +16,23 @@ public class ClimberIOSparkMax implements ClimberIO {
   private static final double GEAR_RATIO = 25; // make sure to change if nessessary
 
   // define the 2 SparkMax Controllers. A top, and a bottom
-  private final CANSparkMax motor;
+  private final SparkMax motor;
 
   private final RelativeEncoder encoder;
 
+  SparkMaxConfig config = new SparkMaxConfig();
+
   public ClimberIOSparkMax(int id, boolean inverted) {
-    motor = new CANSparkMax(id, MotorType.kBrushless);
-    motor.restoreFactoryDefaults();
+    motor = new SparkMax(id, MotorType.kBrushless);
 
+    config
+      .inverted(inverted)
+      .smartCurrentLimit(30)
+      .voltageCompensation(12.0)
+      .idleMode(SparkBaseConfig.IdleMode.kBrake);
+
+    motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     encoder = motor.getEncoder();
-    setPosition(0);
-
-    motor.setInverted(inverted);
-
-    motor.enableVoltageCompensation(12.0);
-    motor.setSmartCurrentLimit(30);
-    motor.setIdleMode(IdleMode.kBrake);
-
-    motor.burnFlash();
   }
 
   @Override

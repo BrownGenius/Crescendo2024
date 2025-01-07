@@ -20,10 +20,10 @@ public class ShooterIOStub implements ShooterIO {
   public ShooterIOStub(ShooterId id) {
     switch (id) {
       case SHOOTER_TOP:
-        wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.004);
+        // wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.004);
         break;
       case SHOOTER_BOTTOM:
-        wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.006);
+        // wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.006);
         break;
     }
   }

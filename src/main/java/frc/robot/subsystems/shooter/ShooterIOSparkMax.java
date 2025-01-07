@@ -1,9 +1,12 @@
 package frc.robot.subsystems.shooter;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.util.Units;
 
 public class ShooterIOSparkMax implements ShooterIO {
@@ -11,27 +14,37 @@ public class ShooterIOSparkMax implements ShooterIO {
   private static final double GEAR_RATIO = 1.0;
 
   // define the 1 SparkMax Controllers
-  private final CANSparkMax flywheel;
+  private final SparkMax flywheel;
 
   // Gets the NEO encoder
   private final RelativeEncoder encoder;
 
+  SparkMaxConfig flyWheelConfig = new SparkMaxConfig();
+
   public ShooterIOSparkMax(int id) {
-    flywheel = new CANSparkMax(id, MotorType.kBrushless);
-    flywheel.restoreFactoryDefaults();
+    flywheel = new SparkMax(id, MotorType.kBrushless);
+    // flywheel.restoreFactoryDefaults();
 
+    // flywheel.setInverted(false);
+
+    // flywheel.enableVoltageCompensation(12.0);
+    // flywheel.setSmartCurrentLimit(60, 40);
+    // flywheel.setSecondaryCurrentLimit(20000);
+
+    // // Set motor to brake mode so shooter stops spinning immediately
+    // flywheel.setIdleMode(IdleMode.kBrake);
+
+    // // Last thing we do is save all settings to flash on sparkmax
+    // flywheel.burnFlash();
+
+    flyWheelConfig
+      .inverted(false)
+      .smartCurrentLimit(60, 40)
+      .secondaryCurrentLimit(20000)
+      .idleMode(SparkBaseConfig.IdleMode.kBrake);
+
+    flywheel.configure(flyWheelConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     encoder = flywheel.getEncoder();
-    flywheel.setInverted(false);
-
-    flywheel.enableVoltageCompensation(12.0);
-    flywheel.setSmartCurrentLimit(60, 40);
-    flywheel.setSecondaryCurrentLimit(20000);
-
-    // Set motor to brake mode so shooter stops spinning immediately
-    flywheel.setIdleMode(IdleMode.kBrake);
-
-    // Last thing we do is save all settings to flash on sparkmax
-    flywheel.burnFlash();
   }
 
   @Override

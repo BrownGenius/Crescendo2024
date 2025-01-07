@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.config.RobotConfig.IntakeConstants;
 
 public class IntakeIOStub implements IntakeIO {
-  private FlywheelSim sim = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.004);
+  // private FlywheelSim sim = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.004);
   private double appliedVolts = 0.0;
   private double elapsedTimeMotorOn = 0.0;
   private boolean limitSwitchState = true; // Start with piece inserted
@@ -14,10 +14,10 @@ public class IntakeIOStub implements IntakeIO {
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
 
-    sim.update(0.02);
+    // sim.update(0.02);
 
     // inputs.positionRad = 0.0;
-    inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
+    // inputs.velocityRadPerSec = sim.getAngularVelocityRadPerSec();
     inputs.appliedVolts = appliedVolts;
     inputs.limitSwitchIntake = limitSwitchState;
     // inputs.currentAmps = new double[] {sim.getCurrentDrawAmps()};
@@ -38,6 +38,6 @@ public class IntakeIOStub implements IntakeIO {
   @Override
   public void setVoltage(double volts) {
     appliedVolts = volts;
-    sim.setInputVoltage(volts);
+    // sim.setInputVoltage(volts);
   }
 }
