@@ -45,7 +45,6 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
           new PhotonPoseEstimator(
               fieldLayout,
               PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-              this.camera,
               this.robotToCamera);
       this.index = numCameras++;
       update();
@@ -53,7 +52,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
 
     private void update() {
       result = camera.getLatestResult();
-      estimatedRobotPose = poseEstimator.update();
+      estimatedRobotPose = poseEstimator.update(result);
     }
 
     private double getLatestTimestamp() {

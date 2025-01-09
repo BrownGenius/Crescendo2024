@@ -48,6 +48,6 @@ public class RobotConfigPhoenix extends RobotConfig {
     }
 
     AutoNamedCommands.configure();
-    autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
+    autoChooser = AutoBuilder.buildAutoChooser("None");
   }
 }
