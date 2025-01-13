@@ -12,6 +12,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.config.RobotConfig.DriveConstants;
@@ -177,7 +178,13 @@ public class DriveSwerveYAGSL extends DriveBase {
   public void periodic() {
     io.updateInputs(inputs, swerveDrive);
     Logger.processInputs("Drive", inputs);
+    for (int i = 0; i < 4; i++) {
+      SmartDashboard.putNumber("mod"+i+"/getAbsolutePosition", swerveDrive.getModules()[i].getAbsolutePosition());
+      SmartDashboard.putNumber("mod"+i+"/getRawAbsolutePosition", swerveDrive.getModules()[i].getRawAbsolutePosition());
+      SmartDashboard.putNumber("mod"+i+"/getAbsoluteEncoder().getAbsolutePosition", swerveDrive.getModules()[i].getAbsoluteEncoder().getAbsolutePosition());
+    }
   }
+  
 
   @Override
   public void addVisionMeasurement(
