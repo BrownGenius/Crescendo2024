@@ -39,7 +39,7 @@ public class DriveSwerveYAGSL extends DriveBase {
   public DriveSwerveYAGSL(String configPath) {
     swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), configPath);
 
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.INFO;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
     try {
       swerveDrive =
           new SwerveParser(swerveJsonDirectory)
