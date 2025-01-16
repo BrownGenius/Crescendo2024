@@ -43,9 +43,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
       this.robotToCamera = camera.robotToCamera;
       this.poseEstimator =
           new PhotonPoseEstimator(
-              fieldLayout,
-              PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-              this.robotToCamera);
+              fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, this.robotToCamera);
       this.index = numCameras++;
       update();
     }

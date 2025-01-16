@@ -11,7 +11,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,7 +27,7 @@ public class ArmIOSparkMax implements ArmIO {
   public double lkP, lkI, lkD, lkIz, lkFF, lkMaxOutput, lkMinOutput, lmaxRPS;
 
   SparkMaxConfig config = new SparkMaxConfig();
-  
+
   public ArmIOSparkMax(int id) {
     this(id, false);
   }
@@ -59,9 +58,7 @@ public class ArmIOSparkMax implements ArmIO {
     System.out.println("ArmIOSparkMax(): Absolute Position Offset: " + absoluteEncoder.get());
     absoluteEncoder.setDutyCycleRange(1.0 / 1024.0, 1023.0 / 1024.0);
 
-    config
-      .inverted(inverted)
-      .smartCurrentLimit(40);
+    config.inverted(inverted).smartCurrentLimit(40);
 
     // Initialize the relative encoder position based on absolute encoder position.  The abs and rel
     // encoder do not scale/align 1-1. At zero they are both zero.  When rel encoder is 80, abs
@@ -73,10 +70,9 @@ public class ArmIOSparkMax implements ArmIO {
     // 60:1 gear box, 72 teeth on the arm cog and 14 teeth on the motor cog
     double gearRatio = (60.0 * (72.0 / 14.0));
     double rotationsToDegreesConversionFactor = 360.0 / gearRatio;
-    
+
     config.encoder.positionConversionFactor(rotationsToDegreesConversionFactor);
     config.encoder.positionConversionFactor(rotationsToDegreesConversionFactor / 60.0);
-    
 
     lkP = RobotConfig.ArmConstants.pidKp;
     lkI = RobotConfig.ArmConstants.pidKi;
@@ -87,15 +83,16 @@ public class ArmIOSparkMax implements ArmIO {
     lkMinOutput = RobotConfig.ArmConstants.pidMinOutput;
     lmaxRPS = 300;
 
-    config.closedLoop
-      .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-      .pid(lkP, lkI, lkD)
-      .iZone(lkIz)
-      .velocityFF(lkFF)
-      .outputRange(lkMinOutput, lkMaxOutput);
+    config
+        .closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .pid(lkP, lkI, lkD)
+        .iZone(lkIz)
+        .velocityFF(lkFF)
+        .outputRange(lkMinOutput, lkMaxOutput);
 
-    motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    
+    motor.configure(
+        config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
     // SmartDashboard.putNumber("Arm/pid/P Gain", lkP);
     // SmartDashboard.putNumber("Arm/pid/I Gain", lkI);
@@ -179,7 +176,12 @@ public class ArmIOSparkMax implements ArmIO {
       SmartDashboard.putNumber("Arm/setPosition/degrees", degrees);
       SmartDashboard.putNumber("Arm/setPosition/ffVolts", ffVolts);
     }
-    armPid.setReference(degrees, SparkMax.ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVolts, ArbFFUnits.kVoltage);
+    armPid.setReference(
+        degrees,
+        SparkMax.ControlType.kPosition,
+        ClosedLoopSlot.kSlot0,
+        ffVolts,
+        ArbFFUnits.kVoltage);
   }
 
   /** Run the arm motor at the specified voltage. */
@@ -190,11 +192,9 @@ public class ArmIOSparkMax implements ArmIO {
 
   @Override
   public void setFeedback(double kP, double kI, double kD, double minOutput, double maxOutput) {
-    config.closedLoop
-        .pid(kP, kI, kD)
-        .outputRange(minOutput, maxOutput);
-    motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-
+    config.closedLoop.pid(kP, kI, kD).outputRange(minOutput, maxOutput);
+    motor.configure(
+        config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
   }
 
   @Override
@@ -223,7 +223,11 @@ public class ArmIOSparkMax implements ArmIO {
       }
     }
     config.idleMode(mode);
-    REVLibError error = motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    REVLibError error =
+        motor.configure(
+            config,
+            SparkBase.ResetMode.kResetSafeParameters,
+            SparkBase.PersistMode.kPersistParameters);
     if (error != REVLibError.kOk) {
       if (Constants.debugMode) {
         SmartDashboard.putString("Arm/Idle Mode", "Error");

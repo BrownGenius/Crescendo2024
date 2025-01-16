@@ -1,12 +1,11 @@
 package frc.robot.subsystems.shooter;
 
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.util.Units;
 
 public class ShooterIOSparkMax implements ShooterIO {
@@ -28,12 +27,15 @@ public class ShooterIOSparkMax implements ShooterIO {
     // // Last thing we do is save all settings to flash on sparkmax
 
     flyWheelConfig
-      .inverted(false)
-      .smartCurrentLimit(60, 40)
-      .secondaryCurrentLimit(20000)
-      .idleMode(SparkBaseConfig.IdleMode.kBrake);
+        .inverted(false)
+        .smartCurrentLimit(60, 40)
+        .secondaryCurrentLimit(20000)
+        .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
-    flywheel.configure(flyWheelConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    flywheel.configure(
+        flyWheelConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
     encoder = flywheel.getEncoder();
   }
 

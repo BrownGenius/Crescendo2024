@@ -6,7 +6,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.util.Units;
 
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,12 +25,13 @@ public class ClimberIOSparkMax implements ClimberIO {
     motor = new SparkMax(id, MotorType.kBrushless);
 
     config
-      .inverted(inverted)
-      .smartCurrentLimit(30)
-      .voltageCompensation(12.0)
-      .idleMode(SparkBaseConfig.IdleMode.kBrake);
+        .inverted(inverted)
+        .smartCurrentLimit(30)
+        .voltageCompensation(12.0)
+        .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
-    motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    motor.configure(
+        config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     encoder = motor.getEncoder();
   }
 

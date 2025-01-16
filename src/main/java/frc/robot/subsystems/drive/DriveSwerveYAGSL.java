@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.config.RobotConfig.DriveConstants;
-import frc.robot.util.DevilBotState;
 import java.io.File;
 import java.util.Optional;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -58,46 +57,45 @@ public class DriveSwerveYAGSL extends DriveBase {
       throw new RuntimeException(e);
     }
     RobotConfig config;
-    try
-    {
+    try {
       config = RobotConfig.fromGUISettings();
 
       final boolean enableFeedforward = true;
-    AutoBuilder.configure(
-              swerveDrive::getPose, // Robot pose supplier
-              swerveDrive
-              ::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-              swerveDrive::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-              (speedsRobotRelative, moduleFeedForwards) -> {
-                if (enableFeedforward)
-                {
-                  swerveDrive.drive(
-                      speedsRobotRelative,
-                      swerveDrive.kinematics.toSwerveModuleStates(speedsRobotRelative),
-                      moduleFeedForwards.linearForces()
-                                  );
-                } else
-                {
-                  swerveDrive.setChassisSpeeds(speedsRobotRelative);
-                }
-              }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-              new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                      new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-              ), // PPLTVController is the built in path following controller for differential drive trains
-              config, // The robot configuration
-              () -> {
-                // Boolean supplier that controls when the path will be mirrored for the red alliance
-                // This will flip the path being followed to the red side of the field.
-                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                  return alliance.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-              },
-              this // Reference to this subsystem to set requirements
-      );
+      AutoBuilder.configure(
+          swerveDrive::getPose, // Robot pose supplier
+          swerveDrive::resetOdometry, // Method to reset odometry (will be called if your auto has a
+          // starting pose)
+          swerveDrive::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+          (speedsRobotRelative, moduleFeedForwards) -> {
+            if (enableFeedforward) {
+              swerveDrive.drive(
+                  speedsRobotRelative,
+                  swerveDrive.kinematics.toSwerveModuleStates(speedsRobotRelative),
+                  moduleFeedForwards.linearForces());
+            } else {
+              swerveDrive.setChassisSpeeds(speedsRobotRelative);
+            }
+          }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally
+          // outputs individual module feedforwards
+          new PPHolonomicDriveController( // PPHolonomicController is the built in path following
+              // controller for holonomic drive trains
+              new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+              new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+              ), // PPLTVController is the built in path following controller for differential drive
+          // trains
+          config, // The robot configuration
+          () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+          },
+          this // Reference to this subsystem to set requirements
+          );
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
@@ -180,12 +178,16 @@ public class DriveSwerveYAGSL extends DriveBase {
     io.updateInputs(inputs, swerveDrive);
     Logger.processInputs("Drive", inputs);
     for (int i = 0; i < 4; i++) {
-      SmartDashboard.putNumber("mod"+i+"/getAbsolutePosition", swerveDrive.getModules()[i].getAbsolutePosition());
-      SmartDashboard.putNumber("mod"+i+"/getRawAbsolutePosition", swerveDrive.getModules()[i].getRawAbsolutePosition());
-      SmartDashboard.putNumber("mod"+i+"/getAbsoluteEncoder().getAbsolutePosition", swerveDrive.getModules()[i].getAbsoluteEncoder().getAbsolutePosition());
+      SmartDashboard.putNumber(
+          "mod" + i + "/getAbsolutePosition", swerveDrive.getModules()[i].getAbsolutePosition());
+      SmartDashboard.putNumber(
+          "mod" + i + "/getRawAbsolutePosition",
+          swerveDrive.getModules()[i].getRawAbsolutePosition());
+      SmartDashboard.putNumber(
+          "mod" + i + "/getAbsoluteEncoder().getAbsolutePosition",
+          swerveDrive.getModules()[i].getAbsoluteEncoder().getAbsolutePosition());
     }
   }
-  
 
   @Override
   public void addVisionMeasurement(
