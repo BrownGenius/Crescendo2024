@@ -1,22 +1,14 @@
 package frc.robot.config;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import frc.robot.Robot;
 import frc.robot.commands.auto.AutoNamedCommands;
 import frc.robot.subsystems.drive.DriveSwerveYAGSL;
-import frc.robot.subsystems.vision.VisionCamera;
-import frc.robot.subsystems.vision.VisionSubsystem;
-import java.util.ArrayList;
 
 /* Override Phoenix specific constants here */
 public class RobotConfigPhoenix extends RobotConfig {
   public RobotConfigPhoenix() {
-    super(false, true, true, true, false, true, false);
+    super(false, true, true, true, true, true, true);
 
     ArmConstants.minDistanceInMeters = Units.inchesToMeters(38);
     ArmConstants.maxDistanceInMeters = 4.0;
@@ -31,23 +23,24 @@ public class RobotConfigPhoenix extends RobotConfig {
     DriveConstants.rotatePidErrorInDegrees = 1;
     drive = new DriveSwerveYAGSL("yagsl/phoenix");
 
-    cameras = new ArrayList<VisionCamera>();
-    cameras.add(
-        new VisionCamera(
-            "shooter",
-            "1182",
-            new Transform3d(
-                new Translation3d(-Units.inchesToMeters(10.75), 0, Units.inchesToMeters(8)),
-                new Rotation3d(0, Units.degreesToRadians(-33), Units.degreesToRadians(180)))));
+    // cameras = new ArrayList<VisionCamera>();
+    // cameras.add(
+    //     new VisionCamera(
+    //         "shooter",
+    //         "1182",
+    //         new Transform3d(
+    //             new Translation3d(-Units.inchesToMeters(10.75), 0, Units.inchesToMeters(8)),
+    //             new Rotation3d(0, Units.degreesToRadians(-33), Units.degreesToRadians(180)))));
 
-    VisionConstants.visionDistanceOffsetInMeters = -0.2;
-    vision = new VisionSubsystem(cameras, AprilTagFields.k2024Crescendo.loadAprilTagLayoutField());
+    // VisionConstants.visionDistanceOffsetInMeters = -0.2;
+    // vision = new VisionSubsystem(cameras,
+    // AprilTagFields.k2024Crescendo.loadAprilTagLayoutField());
 
-    if (Robot.isSimulation()) {
-      vision.enableSimulation(() -> RobotConfig.drive.getPose(), false);
-    }
+    // if (Robot.isSimulation()) {
+    //   vision.enableSimulation(() -> RobotConfig.drive.getPose(), false);
+    // }
 
     AutoNamedCommands.configure();
-    autoChooser = AutoBuilder.buildAutoChooser("Sit Still");
+    autoChooser = AutoBuilder.buildAutoChooser("None");
   }
 }

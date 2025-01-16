@@ -1,10 +1,7 @@
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-
 public class ShooterIOStub implements ShooterIO {
-  private FlywheelSim wheel;
+  // private FlywheelSim wheel;
 
   private double appliedVolts = 0.0;
 
@@ -20,10 +17,10 @@ public class ShooterIOStub implements ShooterIO {
   public ShooterIOStub(ShooterId id) {
     switch (id) {
       case SHOOTER_TOP:
-        wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.004);
+        // wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.004);
         break;
       case SHOOTER_BOTTOM:
-        wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.006);
+        // wheel = new FlywheelSim(DCMotor.getNEO(1), 1.5, 0.006);
         break;
     }
   }
@@ -32,16 +29,16 @@ public class ShooterIOStub implements ShooterIO {
   public void updateInputs(ShooterIOInputs inputs) {
 
     // Update sim
-    wheel.update(0.02);
+    // wheel.update(0.02);
 
-    // Update inputs
-    inputs.velocityRadPerSec = wheel.getAngularVelocityRadPerSec();
+    // // Update inputs
+    // inputs.velocityRadPerSec = wheel.getAngularVelocityRadPerSec();
     inputs.appliedVolts = appliedVolts;
   }
 
   @Override
   public void setVoltage(double volts) {
     appliedVolts = volts;
-    wheel.setInputVoltage(volts);
+    // wheel.setInputVoltage(volts);
   }
 }

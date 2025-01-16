@@ -1,9 +1,11 @@
 package frc.robot.subsystems.intake;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -11,22 +13,24 @@ public class IntakeIOSparkMax implements IntakeIO {
   private static final double GEAR_RATIO = 4.0;
 
   // define the 1 SparkMax Controller
-  private final CANSparkMax leader;
+  private final SparkMax leader;
   // Gets the NEO encoder
   private final RelativeEncoder encoder;
   DigitalInput limitSwitchIntake = new DigitalInput(1);
   DigitalInput limitSwitchIntakeSecondary = new DigitalInput(2);
 
+  SparkMaxConfig leaderConfig = new SparkMaxConfig();
+
   public IntakeIOSparkMax(int id, boolean inverted) {
-    leader = new CANSparkMax(id, MotorType.kBrushless);
+    leader = new SparkMax(id, MotorType.kBrushless);
     encoder = leader.getEncoder();
 
     // leader motor is not inverted, and set follower motor to follow the leader
-    leader.restoreFactoryDefaults();
-    leader.setInverted(inverted);
-    leader.setIdleMode(IdleMode.kBrake);
-    leader.setSmartCurrentLimit(35);
-    leader.burnFlash();
+    leaderConfig.inverted(inverted).idleMode(SparkBaseConfig.IdleMode.kBrake).smartCurrentLimit(35);
+    leader.configure(
+        leaderConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
   }
 
   @Override
