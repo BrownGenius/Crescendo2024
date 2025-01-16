@@ -45,9 +45,6 @@ public class ArmIOSparkMax implements ArmIO {
     motor = new SparkMax(id, MotorType.kBrushless);
 
     // first thing we do to spark device is reset it to known defaults.
-    // motor.restoreFactoryDefaults();
-
-    // relEncoder = motor.getEncoder();
 
     relEncoder = motor.getEncoder();
     relEncoder.setPosition(Units.radiansToDegrees(getOffsetCorrectedAbsolutePositionInRadians()));
@@ -62,10 +59,6 @@ public class ArmIOSparkMax implements ArmIO {
     System.out.println("ArmIOSparkMax(): Absolute Position Offset: " + absoluteEncoder.get());
     absoluteEncoder.setDutyCycleRange(1.0 / 1024.0, 1023.0 / 1024.0);
 
-    // motor.setInverted(inverted);
-
-    // motor.enableVoltageCompensation(12.0);
-    // motor.setSmartCurrentLimit(40);
     config
       .inverted(inverted)
       .smartCurrentLimit(40);
@@ -81,9 +74,6 @@ public class ArmIOSparkMax implements ArmIO {
     double gearRatio = (60.0 * (72.0 / 14.0));
     double rotationsToDegreesConversionFactor = 360.0 / gearRatio;
     
-    // relEncoder.setPositionConversionFactor(rotationsToDegreesConversionFactor);
-    // relEncoder.setVelocityConversionFactor(rotationsToDegreesConversionFactor / 60.0);
-
     config.encoder.positionConversionFactor(rotationsToDegreesConversionFactor);
     config.encoder.positionConversionFactor(rotationsToDegreesConversionFactor / 60.0);
     
@@ -96,13 +86,6 @@ public class ArmIOSparkMax implements ArmIO {
     lkMaxOutput = RobotConfig.ArmConstants.pidMaxOutput;
     lkMinOutput = RobotConfig.ArmConstants.pidMinOutput;
     lmaxRPS = 300;
-
-    // armPid.setP(lkP);
-    // armPid.setI(lkI);
-    // armPid.setD(lkD);
-    // armPid.setIZone(lkIz);
-    // armPid.setFF(lkFF);
-    // armPid.setOutputRange(lkMinOutput, lkMaxOutput);
 
     config.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -207,10 +190,6 @@ public class ArmIOSparkMax implements ArmIO {
 
   @Override
   public void setFeedback(double kP, double kI, double kD, double minOutput, double maxOutput) {
-    // armPid.setP(kP);
-    // armPid.setI(kI);
-    // armPid.setD(kD);
-    // armPid.setOutputRange(minOutput, maxOutput);
     config.closedLoop
         .pid(kP, kI, kD)
         .outputRange(minOutput, maxOutput);

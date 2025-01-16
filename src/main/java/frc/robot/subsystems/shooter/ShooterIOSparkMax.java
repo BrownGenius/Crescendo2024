@@ -23,19 +23,9 @@ public class ShooterIOSparkMax implements ShooterIO {
 
   public ShooterIOSparkMax(int id) {
     flywheel = new SparkMax(id, MotorType.kBrushless);
-    // flywheel.restoreFactoryDefaults();
-
-    // flywheel.setInverted(false);
-
-    // flywheel.enableVoltageCompensation(12.0);
-    // flywheel.setSmartCurrentLimit(60, 40);
-    // flywheel.setSecondaryCurrentLimit(20000);
-
     // // Set motor to brake mode so shooter stops spinning immediately
-    // flywheel.setIdleMode(IdleMode.kBrake);
 
     // // Last thing we do is save all settings to flash on sparkmax
-    // flywheel.burnFlash();
 
     flyWheelConfig
       .inverted(false)

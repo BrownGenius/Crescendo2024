@@ -27,13 +27,6 @@ public class IntakeIOSparkMax implements IntakeIO {
     encoder = leader.getEncoder();
 
     // leader motor is not inverted, and set follower motor to follow the leader
-    // leader.restoreFactoryDefaults();
-    // leader.setInverted(inverted);
-    // leader.setIdleMode(IdleMode.kBrake);
-    // leader.setSmartCurrentLimit(35);
-    // leader.burnFlash();
-
-    
     leaderConfig
       .inverted(inverted)
       .idleMode(SparkBaseConfig.IdleMode.kBrake)
