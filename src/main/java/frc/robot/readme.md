@@ -9,4 +9,3 @@ This code based uses the [WPILib command-based](https://docs.wpilib.org/en/stabl
       * The "Robot Name" key is read from the RoboRio at start and determines which robot config to load.
    1. Setup Controls (Bindings)
    1. Setup Autonomous
-   
