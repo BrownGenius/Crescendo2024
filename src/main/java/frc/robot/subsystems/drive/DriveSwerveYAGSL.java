@@ -24,7 +24,6 @@ import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
-import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class DriveSwerveYAGSL extends DriveBase {
   private final File swerveJsonDirectory;
@@ -38,7 +37,7 @@ public class DriveSwerveYAGSL extends DriveBase {
   public DriveSwerveYAGSL(String configPath) {
     swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), configPath);
 
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    // SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
       swerveDrive =
           new SwerveParser(swerveJsonDirectory)
@@ -145,7 +144,10 @@ public class DriveSwerveYAGSL extends DriveBase {
    */
   public Command sysIdDriveMotorCommand() {
     return SwerveDriveTest.generateSysIdCommand(
-        SwerveDriveTest.setDriveSysIdRoutine(new Config(), this, swerveDrive, 12), 3.0, 5.0, 3.0);
+        SwerveDriveTest.setDriveSysIdRoutine(new Config(), this, swerveDrive, 12, false),
+        3.0,
+        5.0,
+        3.0);
   }
 
   /**
