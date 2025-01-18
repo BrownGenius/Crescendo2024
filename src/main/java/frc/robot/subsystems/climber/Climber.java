@@ -4,6 +4,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public interface Climber {
+  public static class Constants {
+    public static double minPositionInRadians = 0.0;
+    public static double maxPositionInRadians = 4.0;
+    public static double defaultSpeedInVolts = 2.0;
+  }
+
   public void runVoltage(double volts);
 
   public default void runVoltageLeft(double volts) {}

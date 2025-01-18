@@ -9,6 +9,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import java.util.Optional;
 
 public interface Drive {
+  public static class Constants {
+    public static double maxVelocityMetersPerSec = 4.5;
+    public static double maxAngularVelocityRadiansSec = 2 * Math.PI;
+
+    public static double rotatePidKp = 0.05;
+    public static double rotatePidKi = 0.0;
+    public static double rotatePidKd = 0.0;
+  }
+
   /**
    * Sets the desired chassis speed
    *

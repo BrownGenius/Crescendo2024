@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.IntakeConstants;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 
 public class AutoPrepareForIntakeV2 extends SequentialCommandGroup {
   public AutoPrepareForIntakeV2(Arm arm, Intake intake) {
@@ -21,17 +21,17 @@ public class AutoPrepareForIntakeV2 extends SequentialCommandGroup {
     addCommands(
         new ParallelCommandGroup(
                 new InstantCommand(
-                    () ->
-                        intake.runVoltage(
-                            RobotConfig.IntakeConstants.defaultSpeedInVolts)), // run intake
+                    () -> intake.runVoltage(Intake.Constants.defaultSpeedInVolts)), // run intake
                 new ArmToPosition(
-                    arm, () -> ArmConstants.intakeAngleInDegrees) // Move arm to intake position
+                    arm,
+                    () ->
+                        ArmSubsystem.Constants.intakeAngleInDegrees) // Move arm to intake position
                 )
             .until(() -> intake.isPieceDetected())); // exit early if piece detected
     addCommands(
         new SequentialCommandGroup(
             new WaitUntilCommand(() -> RobotConfig.intake.isPieceDetected())
-                .withTimeout(IntakeConstants.intakeTimeoutInSeconds)
+                .withTimeout(IntakeSubsystem.Constants.intakeTimeoutInSeconds)
                 .handleInterrupt(
                     () ->
                         System.err.println(

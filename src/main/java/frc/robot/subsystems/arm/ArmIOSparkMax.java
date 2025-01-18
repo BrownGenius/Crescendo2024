@@ -15,8 +15,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
 
 public class ArmIOSparkMax implements ArmIO {
 
@@ -33,8 +31,8 @@ public class ArmIOSparkMax implements ArmIO {
   }
 
   double getOffsetCorrectedAbsolutePositionInRadians() {
-    return ((absoluteEncoder.get() - ArmConstants.absolutePositionOffset)
-            * ArmConstants.absoluteEncoderInversion)
+    return ((absoluteEncoder.get() - ArmSubsystem.Constants.absolutePositionOffset)
+            * ArmSubsystem.Constants.absoluteEncoderInversion)
         * 2.0
         * Math.PI;
   }
@@ -74,13 +72,13 @@ public class ArmIOSparkMax implements ArmIO {
     config.encoder.positionConversionFactor(rotationsToDegreesConversionFactor);
     config.encoder.positionConversionFactor(rotationsToDegreesConversionFactor / 60.0);
 
-    lkP = RobotConfig.ArmConstants.pidKp;
-    lkI = RobotConfig.ArmConstants.pidKi;
-    lkD = RobotConfig.ArmConstants.pidKd;
+    lkP = Arm.Constants.pidKp;
+    lkI = Arm.Constants.pidKi;
+    lkD = Arm.Constants.pidKd;
     lkIz = 0;
     lkFF = 0;
-    lkMaxOutput = RobotConfig.ArmConstants.pidMaxOutput;
-    lkMinOutput = RobotConfig.ArmConstants.pidMinOutput;
+    lkMaxOutput = ArmSubsystem.Constants.pidMaxOutput;
+    lkMinOutput = ArmSubsystem.Constants.pidMinOutput;
     lmaxRPS = 300;
 
     config

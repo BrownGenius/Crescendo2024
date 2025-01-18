@@ -32,10 +32,11 @@ import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveToYaw;
 import frc.robot.commands.shooter.SetShooterVelocity;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.DriveConstants;
-import frc.robot.config.RobotConfig.IntakeConstants;
-import frc.robot.config.RobotConfig.ShooterConstants;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.drive.DriveBase;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.vision.VisionCamera;
 import frc.robot.util.DevilBotState;
 import frc.robot.util.DevilBotState.DriveMode;
@@ -142,7 +143,7 @@ public class DriverControls {
         .addDouble("Target Angle (degrees)", () -> RobotConfig.arm.getTargetAngle())
         .withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(
-            Map.of("min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+            Map.of("min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
         .withSize(2, 1)
         .withPosition(colIndex, rowIndex++);
 
@@ -150,7 +151,7 @@ public class DriverControls {
         .addDouble("Abs Angle (degrees)", () -> RobotConfig.arm.getAngle())
         .withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(
-            Map.of("min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+            Map.of("min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
         .withSize(2, 1)
         .withPosition(colIndex, rowIndex++);
 
@@ -158,7 +159,7 @@ public class DriverControls {
         .addDouble("Rel Angle (degrees)", () -> RobotConfig.arm.getRelativeAngle())
         .withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(
-            Map.of("min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+            Map.of("min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
         .withSize(2, 1)
         .withPosition(colIndex, rowIndex++);
 
@@ -278,9 +279,11 @@ public class DriverControls {
                   if ((false == RobotConfig.intake.isPieceDetected())
                       || (false == DevilBotState.isPieceDetectionEnabled())) {
                     RobotConfig.intake.turnOn();
-                    RobotConfig.arm.setAngle(ArmConstants.intakeAngleInDegrees); // Intake Note
+                    RobotConfig.arm.setAngle(
+                        ArmSubsystem.Constants.intakeAngleInDegrees); // Intake Note
                   } else {
-                    RobotConfig.arm.setAngle(ArmConstants.stowIntakeAngleInDegrees); // Stow Arm
+                    RobotConfig.arm.setAngle(
+                        ArmSubsystem.Constants.stowIntakeAngleInDegrees); // Stow Arm
                   }
                 },
                 RobotConfig.arm));
@@ -289,7 +292,7 @@ public class DriverControls {
         .leftTrigger()
         .onFalse(
             new InstantCommand(
-                () -> RobotConfig.arm.setAngle(ArmConstants.stowIntakeAngleInDegrees),
+                () -> RobotConfig.arm.setAngle(ArmSubsystem.Constants.stowIntakeAngleInDegrees),
                 RobotConfig.arm)); // Stow Arm
 
     mainController
@@ -314,7 +317,7 @@ public class DriverControls {
                             new DriveToYaw(
                                     RobotConfig.drive,
                                     () -> DevilBotState.getVisionRobotYawToTarget())
-                                .withTimeout(DriveConstants.pidTimeoutInSeconds))),
+                                .withTimeout(DriveBase.Constants.pidTimeoutInSeconds))),
                     () -> DevilBotState.isAmpMode())
                 .until(() -> driveOverride(mainController)));
 
@@ -322,7 +325,7 @@ public class DriverControls {
         .rightBumper()
         .onTrue(
             new SetShooterVelocity(RobotConfig.shooter, () -> DevilBotState.getShooterVelocity())
-                .withTimeout(ShooterConstants.pidTimeoutInSeconds) // turn on shooter
+                .withTimeout(ShooterSubsystem.Constants.pidTimeoutInSeconds) // turn on shooter
             );
 
     mainController
@@ -348,7 +351,7 @@ public class DriverControls {
                 new SetShooterVelocity(
                         RobotConfig.shooter, () -> DevilBotState.getShooterVelocity())
                     .withTimeout(
-                        ShooterConstants
+                        ShooterSubsystem.Constants
                             .pidTimeoutInSeconds), // set shooter velocity in case it's not already
                 // on
                 RobotConfig.intake.getTurnOnCommand())); // Shoot Note
@@ -371,11 +374,11 @@ public class DriverControls {
             () ->
                 Units.radiansPerSecondToRotationsPerMinute(RobotConfig.shooter.getCurrentSpeed())
                         >= DevilBotState.getShooterVelocity()
-                            - ShooterConstants.pidVelocityErrorInRPM
+                            - ShooterSubsystem.Constants.pidVelocityErrorInRPM
                     && Units.radiansPerSecondToRotationsPerMinute(
                             RobotConfig.shooter.getCurrentSpeed())
                         <= DevilBotState.getShooterVelocity()
-                            + ShooterConstants.pidVelocityErrorInRPM);
+                            + ShooterSubsystem.Constants.pidVelocityErrorInRPM);
     shooterRPMTrigger.onTrue(
         new SequentialCommandGroup(
             // Starts the controller rumble
@@ -401,7 +404,7 @@ public class DriverControls {
             new SequentialCommandGroup(
                 RobotConfig.intake.getTurnOffCommand(), // Turn off intake
                 new InstantCommand(
-                    () -> RobotConfig.arm.setAngle(ArmConstants.stowIntakeAngleInDegrees),
+                    () -> RobotConfig.arm.setAngle(ArmSubsystem.Constants.stowIntakeAngleInDegrees),
                     RobotConfig.arm), // Put arm in stow mode
                 new InstantCommand(
                     () -> RobotConfig.shooter.runVelocity(DevilBotState.getShooterVelocity()),
@@ -417,7 +420,7 @@ public class DriverControls {
             new ParallelCommandGroup(
                 RobotConfig.intake.getTurnOnCommand(), // Turn on intake
                 new InstantCommand(
-                    () -> RobotConfig.arm.setAngle(ArmConstants.stowIntakeAngleInDegrees),
+                    () -> RobotConfig.arm.setAngle(ArmSubsystem.Constants.stowIntakeAngleInDegrees),
                     RobotConfig.arm), // Put arm in stow mode
                 new InstantCommand(
                     () -> RobotConfig.shooter.runVelocity(0),
@@ -465,13 +468,13 @@ public class DriverControls {
         .leftBumper()
         .onTrue(
             new InstantCommand(
-                () -> RobotConfig.intake.runVoltage(-IntakeConstants.defaultSpeedInVolts),
+                () -> RobotConfig.intake.runVoltage(-Intake.Constants.defaultSpeedInVolts),
                 RobotConfig.intake)); // Intake: Out
     controller
         .rightBumper()
         .onTrue(
             new InstantCommand(
-                () -> RobotConfig.intake.runVoltage(IntakeConstants.defaultSpeedInVolts),
+                () -> RobotConfig.intake.runVoltage(Intake.Constants.defaultSpeedInVolts),
                 RobotConfig.intake)); // Intake: In
 
     controller
@@ -481,12 +484,12 @@ public class DriverControls {
                 RobotConfig.intake.getTurnOffCommand(),
                 new SetShooterVelocity(
                         RobotConfig.shooter, () -> DevilBotState.getShooterVelocity())
-                    .withTimeout(ShooterConstants.pidTimeoutInSeconds), // turn on shooter
+                    .withTimeout(ShooterSubsystem.Constants.pidTimeoutInSeconds), // turn on shooter
                 /* TODO: Use ArmToPositionTP instead of setting arm angle directly */
                 new InstantCommand(
                     () -> {
                       if (DevilBotState.isAmpMode()) {
-                        RobotConfig.arm.setAngle(ArmConstants.ampScoreAngleInDegrees);
+                        RobotConfig.arm.setAngle(ArmSubsystem.Constants.ampScoreAngleInDegrees);
                       } else {
                         Optional<Double> armAngle = DevilBotState.getArmAngleToTarget();
                         if (armAngle.isPresent()) {

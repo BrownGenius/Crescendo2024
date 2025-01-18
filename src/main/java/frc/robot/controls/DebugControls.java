@@ -16,9 +16,10 @@ import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.debug.TestShooterAngle;
 import frc.robot.commands.shooter.SetShooterVelocity;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.IntakeConstants;
-import frc.robot.config.RobotConfig.ShooterConstants;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.util.DevilBotState;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class DebugControls {
         .addDouble("Arm Abs Angle (degrees)", () -> RobotConfig.arm.getAngle())
         .withWidget(BuiltInWidgets.kTextView)
         .withProperties(
-            Map.of("min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+            Map.of("min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
         .withSize(2, 1)
         .withPosition(layoutColIndex, layoutRowIndex++);
 
@@ -111,7 +112,7 @@ public class DebugControls {
 
     GenericEntry intakeVoltageEntry =
         debugTab
-            .add("Intake: Volts", IntakeConstants.defaultSpeedInVolts)
+            .add("Intake: Volts", Intake.Constants.defaultSpeedInVolts)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", 0, "max", 12))
             .withPosition(colIndex, rowIndex++)
@@ -120,18 +121,18 @@ public class DebugControls {
 
     GenericEntry armAngleEntry =
         debugTab
-            .add("Arm: Angle", ArmConstants.subwooferScoreAngleInDegrees)
+            .add("Arm: Angle", ArmSubsystem.Constants.subwooferScoreAngleInDegrees)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(
                 Map.of(
-                    "min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+                    "min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
             .withPosition(colIndex, rowIndex++)
             .withSize(2, 1)
             .getEntry();
 
     GenericEntry shooterVelocityEntry =
         debugTab
-            .add("Shooter: Velocity", ShooterConstants.velocityInRPM)
+            .add("Shooter: Velocity", ShooterSubsystem.Constants.velocityInRPM)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", 0, "max", 6000))
             .withPosition(colIndex, rowIndex++)
@@ -145,9 +146,9 @@ public class DebugControls {
                 RobotConfig.shooter,
                 RobotConfig.intake,
                 RobotConfig.arm,
-                () -> shooterVelocityEntry.getDouble(ShooterConstants.velocityInRPM),
-                () -> intakeVoltageEntry.getDouble(IntakeConstants.defaultSpeedInVolts),
-                () -> armAngleEntry.getDouble(ArmConstants.subwooferScoreAngleInDegrees)))
+                () -> shooterVelocityEntry.getDouble(ShooterSubsystem.Constants.velocityInRPM),
+                () -> intakeVoltageEntry.getDouble(Intake.Constants.defaultSpeedInVolts),
+                () -> armAngleEntry.getDouble(ArmSubsystem.Constants.subwooferScoreAngleInDegrees)))
         .withPosition(colIndex, rowIndex++)
         .withSize(2, 1);
 
@@ -159,7 +160,7 @@ public class DebugControls {
             "Arm To Position",
             new ArmToPosition(
                 RobotConfig.arm,
-                () -> armAngleEntry.getDouble(ArmConstants.subwooferScoreAngleInDegrees)))
+                () -> armAngleEntry.getDouble(ArmSubsystem.Constants.subwooferScoreAngleInDegrees)))
         .withPosition(colIndex, rowIndex++)
         .withSize(2, 1);
 
@@ -168,7 +169,7 @@ public class DebugControls {
             "Shooter to Velocity",
             new SetShooterVelocity(
                 RobotConfig.shooter,
-                () -> shooterVelocityEntry.getDouble(ShooterConstants.velocityInRPM)))
+                () -> shooterVelocityEntry.getDouble(ShooterSubsystem.Constants.velocityInRPM)))
         .withPosition(colIndex, rowIndex++)
         .withSize(2, 1);
 
@@ -195,7 +196,7 @@ public class DebugControls {
             .add(
                 "Vision: Align To Target",
                 new DriveToYaw(RobotConfig.drive, () -> DevilBotState.getVisionRobotYawToTarget())
-                    .withTimeout(DriveConstants.pidTimeoutInSeconds))
+                    .withTimeout(DriveSubsystem.Constants.pidTimeoutInSeconds))
             .withPosition(colIndex, rowIndex++)
             .withSize(2, 1);
     */

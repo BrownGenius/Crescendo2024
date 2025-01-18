@@ -3,7 +3,7 @@ package frc.robot.commands.drive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.config.RobotConfig.DriveConstants;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveBase;
 import frc.robot.util.DevilBotState;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class DriveCommand extends Command {
     // Wild guess at P constant.
     turnPID =
         new PIDController(
-            DriveConstants.rotatePidKp, DriveConstants.rotatePidKi, DriveConstants.rotatePidKd);
+            Drive.Constants.rotatePidKp, Drive.Constants.rotatePidKi, Drive.Constants.rotatePidKd);
     turnPID.enableContinuousInput(0, 360);
 
     addRequirements(drive);

@@ -3,8 +3,8 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.ShooterConstants;
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import java.util.Optional;
 
 public class DevilBotState {
@@ -101,9 +101,9 @@ public class DevilBotState {
 
   public static double getShooterVelocity() {
     if (isAmpMode()) {
-      return ShooterConstants.ampScoreVelocityInRPM;
+      return ShooterSubsystem.Constants.ampScoreVelocityInRPM;
     } else {
-      return ShooterConstants.velocityInRPM;
+      return ShooterSubsystem.Constants.velocityInRPM;
     }
   }
 
@@ -166,15 +166,15 @@ public class DevilBotState {
   public static Optional<Double> getArmAngleToTarget() {
     {
       if (isAmpMode()) {
-        return Optional.of(ArmConstants.ampScoreAngleInDegrees);
+        return Optional.of(ArmSubsystem.Constants.ampScoreAngleInDegrees);
       }
 
       switch (DevilBotState.shootingMode) {
         case SPEAKER_FROM_SUBWOOFER:
-          return Optional.of(ArmConstants.subwooferScoreAngleInDegrees);
+          return Optional.of(ArmSubsystem.Constants.subwooferScoreAngleInDegrees);
 
         case SPEAKER_FROM_PODIUM:
-          return Optional.of(ArmConstants.subwooferScoreFromPodiumAngleInDegrees);
+          return Optional.of(ArmSubsystem.Constants.subwooferScoreFromPodiumAngleInDegrees);
 
         case SPEAKER_VISION_BASED:
           Optional<Double> distanceToTarget =

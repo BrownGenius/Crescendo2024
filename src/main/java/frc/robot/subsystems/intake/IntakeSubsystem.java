@@ -7,13 +7,18 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.config.RobotConfig.IntakeConstants;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class IntakeSubsystem extends SubsystemBase implements Intake {
+  public static class Constants {
+    public static double sensorDelayFalseToTrueInSeconds = 0.06;
+    public static double sensorDelayTrueToFalseInSeconds = 0.1;
+    public static double intakeTimeoutInSeconds = 2.0; // max time to wait for piece to be detected
+  }
+
   private final IntakeIO IO;
   private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
   @AutoLogOutput private double targetVoltage;
@@ -59,9 +64,9 @@ public class IntakeSubsystem extends SubsystemBase implements Intake {
       limitSwitchTimer += 0.02;
       double sensorDelayInSeconds;
       if (limitSwitchDelayed) {
-        sensorDelayInSeconds = IntakeConstants.sensorDelayTrueToFalseInSeconds;
+        sensorDelayInSeconds = Constants.sensorDelayTrueToFalseInSeconds;
       } else {
-        sensorDelayInSeconds = IntakeConstants.sensorDelayFalseToTrueInSeconds;
+        sensorDelayInSeconds = Constants.sensorDelayFalseToTrueInSeconds;
       }
 
       if (limitSwitchTimer >= sensorDelayInSeconds) {

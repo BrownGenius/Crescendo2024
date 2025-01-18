@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.config.RobotConfig;
 import frc.robot.config.RobotConfigInferno;
 import frc.robot.config.RobotConfigPhoenix;
-import frc.robot.config.RobotConfigSherman;
 import frc.robot.controls.DebugControls;
 import frc.robot.controls.DriverControls;
 import frc.robot.controls.PitControls;
@@ -29,9 +28,6 @@ public class RobotContainer {
     switch (robotName) {
       case "PHOENIX":
         robotConfig = new RobotConfigPhoenix();
-        break;
-      case "SHERMAN":
-        robotConfig = new RobotConfigSherman();
         break;
       case "INFERNO":
         robotConfig = new RobotConfigInferno();

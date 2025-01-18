@@ -2,9 +2,13 @@ package frc.robot.subsystems.intake;
 
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.config.RobotConfig.IntakeConstants;
 
 public interface Intake {
+
+  public static class Constants {
+    public static double defaultSpeedInVolts = 6.0;
+  }
+
   public default boolean isPieceDetected() {
     return false;
   }
@@ -22,7 +26,7 @@ public interface Intake {
   public Command getTurnOffCommand();
 
   public default void turnOn() {
-    runVoltage(IntakeConstants.defaultSpeedInVolts);
+    runVoltage(Constants.defaultSpeedInVolts);
   }
 
   public Command getTurnOnCommand();

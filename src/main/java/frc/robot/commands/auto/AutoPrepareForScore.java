@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.shooter.SetShooterVelocity;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.ShooterConstants;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import java.util.function.DoubleSupplier;
 
 public class AutoPrepareForScore extends SequentialCommandGroup {
@@ -33,9 +33,10 @@ public class AutoPrepareForScore extends SequentialCommandGroup {
     }
     addCommands(
         new ParallelCommandGroup(
-            new ArmToPosition(arm, armAngleInDegrees).withTimeout(ArmConstants.pidTimeoutInSeconds),
+            new ArmToPosition(arm, armAngleInDegrees)
+                .withTimeout(ArmSubsystem.Constants.pidTimeoutInSeconds),
             new SetShooterVelocity(shooter, shooterVelocityInRPMs)
-                .withTimeout(ShooterConstants.pidTimeoutInSeconds)));
+                .withTimeout(ShooterSubsystem.Constants.pidTimeoutInSeconds)));
 
     if (Constants.debugCommands) {
       addCommands(new PrintCommand("  END: AutoPrepareToScore"));

@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.intake.IntakeOut;
-import frc.robot.config.RobotConfig;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 
@@ -20,8 +20,8 @@ public class EjectPiece extends SequentialCommandGroup {
   public EjectPiece(Intake intake, Arm arm, Shooter shooter) {
 
     double current_pos = arm.getAngle();
-    if (current_pos < RobotConfig.ArmConstants.ejectAngleInDegrees) {
-      addCommands(new ArmToPosition(arm, () -> RobotConfig.ArmConstants.ejectAngleInDegrees));
+    if (current_pos < ArmSubsystem.Constants.ejectAngleInDegrees) {
+      addCommands(new ArmToPosition(arm, () -> ArmSubsystem.Constants.ejectAngleInDegrees));
     }
 
     addCommands(

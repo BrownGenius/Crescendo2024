@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.ShooterConstants;
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.util.DevilBotState;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,28 +32,40 @@ public class AutoNamedCommands {
     /* TODO: Fill in the values for scoring here */
     public static AutoScoreConstants scoreFromASubwooferAmpSide =
         new AutoScoreConstants(
-            0.0, ArmConstants.subwooferScoreAngleInDegrees, ShooterConstants.velocityInRPM);
+            0.0,
+            ArmSubsystem.Constants.subwooferScoreAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
     public static AutoScoreConstants scoreFromCSubwooferCenter =
         new AutoScoreConstants(
-            0.0, ArmConstants.subwooferScoreAngleInDegrees, ShooterConstants.velocityInRPM);
+            0.0,
+            ArmSubsystem.Constants.subwooferScoreAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
     public static AutoScoreConstants scoreFromPSubwooferPodiumSide =
         new AutoScoreConstants(
-            0.0, ArmConstants.subwooferScoreAngleInDegrees, ShooterConstants.velocityInRPM);
+            0.0,
+            ArmSubsystem.Constants.subwooferScoreAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
 
     public static AutoScoreConstants scoreFrom1WingPodiumNote =
         new AutoScoreConstants(
-            -28, ArmConstants.noteScoreAngleInDegrees, ShooterConstants.velocityInRPM);
+            -28,
+            ArmSubsystem.Constants.noteScoreAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
     public static AutoScoreConstants scoreFrom2WingSpeakerNote =
         new AutoScoreConstants(
-            0.0, ArmConstants.noteScoreAngleInDegrees, ShooterConstants.velocityInRPM);
+            0.0,
+            ArmSubsystem.Constants.noteScoreAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
     public static AutoScoreConstants scoreFrom3WingAmpNote =
         new AutoScoreConstants(
-            28, ArmConstants.noteScoreAngleInDegrees, ShooterConstants.velocityInRPM);
+            28,
+            ArmSubsystem.Constants.noteScoreAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
     public static AutoScoreConstants scoreFromBetween2and3 =
         new AutoScoreConstants(
             11,
-            ArmConstants.subwooferScoreFromPodiumAngleInDegrees,
-            ShooterConstants.velocityInRPM);
+            ArmSubsystem.Constants.subwooferScoreFromPodiumAngleInDegrees,
+            ShooterSubsystem.Constants.velocityInRPM);
   }
 
   public static void configure() {

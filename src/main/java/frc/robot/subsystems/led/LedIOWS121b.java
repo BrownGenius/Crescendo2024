@@ -2,13 +2,12 @@ package frc.robot.subsystems.led;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import frc.robot.config.RobotConfig.LedConstants;
 
 public class LedIOWS121b implements LedIO {
 
-  AddressableLED led1 = new AddressableLED(LedConstants.Led1PWDPort);
+  AddressableLED led1 = new AddressableLED(Led.Constants.Led1PWDPort);
 
-  AddressableLEDBuffer led1Buffer = new AddressableLEDBuffer(LedConstants.Led1Length);
+  AddressableLEDBuffer led1Buffer = new AddressableLEDBuffer(Led.Constants.Led1Length);
 
   public LedIOWS121b() {
     led1.setLength(led1Buffer.getLength());

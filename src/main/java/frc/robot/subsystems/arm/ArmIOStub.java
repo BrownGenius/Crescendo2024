@@ -3,8 +3,6 @@ package frc.robot.subsystems.arm;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
 
 public class ArmIOStub implements ArmIO {
   // The P gain for the PID controller that drives this arm.
@@ -12,8 +10,8 @@ public class ArmIOStub implements ArmIO {
   private double feedForwardVolts = 0;
   private double armGearingReduction = 317;
   private double armLengthInMeters = .5;
-  private double minAngleInDegrees = ArmConstants.minAngleInDegrees;
-  private double maxAngleInDegrees = ArmConstants.maxAngleInDegrees;
+  private double minAngleInDegrees = Arm.Constants.minAngleInDegrees;
+  private double maxAngleInDegrees = Arm.Constants.maxAngleInDegrees;
   private double armMassInKg = 11.3398;
 
   // The arm gearbox represents a gearbox containing two Vex 775pro motors.
@@ -22,10 +20,7 @@ public class ArmIOStub implements ArmIO {
 
   // Standard classes for controlling our arm
   private final PIDController pid =
-      new PIDController(
-          RobotConfig.ArmConstants.pidKp,
-          RobotConfig.ArmConstants.pidKi,
-          RobotConfig.ArmConstants.pidKd);
+      new PIDController(Arm.Constants.pidKp, Arm.Constants.pidKi, Arm.Constants.pidKd);
   private boolean softwarePidEnabled = false;
 
   // Simulation classes help us simulate what's going on, including gravity.

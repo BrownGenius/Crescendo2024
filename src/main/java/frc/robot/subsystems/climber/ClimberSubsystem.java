@@ -10,12 +10,25 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.config.RobotConfig.ClimberConstants;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
 
 public class ClimberSubsystem extends SubsystemBase implements Climber {
+  public static class Constants {
+    public static double autoZeroVoltage = 2.0;
+    public static double autoZeroMaxCurrent = 16;
+    public static double autoZeroMinVelocity = 0.2;
+    public static double autoZeroExtendTimeInSeconds = 0.5;
+    public static double autoZeroMaxRetractTimeInSeconds = 5.0;
+    public static double autoZeroOffset =
+        -0.5; // When auto-zeroing, to reduce stress on the mechanism, this is the amount we want to
+    public static double matchStartPositionRadiansRight = 2.5;
+    // retract the climber after auto-zeroing
+    public static double maxExtendTimeInSeconds = 5.0;
+    public static double maxRetractTimeInSeconds = 8.0;
+  }
+
   private class ClimberInstance {
     private final ClimberIO io;
     private final ClimberIOInputsAutoLogged inputs;
@@ -46,7 +59,7 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
 
       if ((null != climber2d) && (voltage != 0)) {
         climber2d.setLength(
-            10 + 30 * (inputs.positionRadians / ClimberConstants.maxPositionInRadians));
+            10 + 30 * (inputs.positionRadians / Climber.Constants.maxPositionInRadians));
       }
     }
 
@@ -60,11 +73,11 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
     }
 
     private boolean isAtMaxLimit() {
-      return (inputs.positionRadians >= ClimberConstants.maxPositionInRadians);
+      return (inputs.positionRadians >= Climber.Constants.maxPositionInRadians);
     }
 
     private boolean isAtMinLimit() {
-      return (inputs.positionRadians <= ClimberConstants.minPositionInRadians);
+      return (inputs.positionRadians <= Climber.Constants.minPositionInRadians);
     }
 
     private boolean atLimits() {
@@ -75,11 +88,10 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
           /* If we are in autozero mode, don't let the climber move up */
           return true;
         } else {
-          if ((inputs.current > ClimberConstants.autoZeroMaxCurrent)
-              && (Math.abs(inputs.velocityRadiansPerSecond)
-                  < ClimberConstants.autoZeroMinVelocity)) {
+          if ((inputs.current > Constants.autoZeroMaxCurrent)
+              && (Math.abs(inputs.velocityRadiansPerSecond) < Constants.autoZeroMinVelocity)) {
             runVoltage(0);
-            io.setPosition(ClimberConstants.autoZeroOffset);
+            io.setPosition(Constants.autoZeroOffset);
             autoZeroMode = false;
             return true;
           } else {
@@ -134,12 +146,12 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
 
   /** Extends climber arms min limit */
   private void extend() {
-    runVoltage(ClimberConstants.defaultSpeedInVolts);
+    runVoltage(Climber.Constants.defaultSpeedInVolts);
   }
 
   /** Retracts climber to min limit */
   private void retract() {
-    runVoltage(-ClimberConstants.defaultSpeedInVolts);
+    runVoltage(-Climber.Constants.defaultSpeedInVolts);
   }
 
   @Override
@@ -264,16 +276,14 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
   public Command getExtendCommand() {
     return new SequentialCommandGroup(
         new InstantCommand(() -> extend(), this),
-        Commands.waitUntil(() -> isAtMaxLimit())
-            .withTimeout(ClimberConstants.maxExtendTimeInSeconds));
+        Commands.waitUntil(() -> isAtMaxLimit()).withTimeout(Constants.maxExtendTimeInSeconds));
   }
 
   @Override
   public Command getRetractCommand() {
     return new SequentialCommandGroup(
         new InstantCommand(() -> retract(), this),
-        Commands.waitUntil(() -> isAtMinLimit())
-            .withTimeout(ClimberConstants.maxRetractTimeInSeconds));
+        Commands.waitUntil(() -> isAtMinLimit()).withTimeout(Constants.maxRetractTimeInSeconds));
   }
 
   public Command getAutoZeroCommand() {
@@ -283,11 +293,11 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
                   //                  System.out.println("Auto Zero: Disable Limits");
                   enableLimits(false);
                   //                  System.out.println("Auto Zero: Extend Climber");
-                  runVoltage(ClimberConstants.autoZeroVoltage);
+                  runVoltage(Constants.autoZeroVoltage);
                   //                  System.out.println("Auto Zero: Wait For Extend");
                 },
                 this),
-            Commands.waitSeconds(ClimberConstants.autoZeroExtendTimeInSeconds),
+            Commands.waitSeconds(Constants.autoZeroExtendTimeInSeconds),
             new InstantCommand(
                 () -> {
                   //                  System.out.println("Auto Zero: Enable Limits");
@@ -295,11 +305,11 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
                   //                  System.out.println("Auto Zero: Enable Auto Zero Mode");
                   autoZeroMode(true);
                   //                  System.out.println("Auto Zero: Retract Climber");
-                  runVoltage(-ClimberConstants.autoZeroVoltage);
+                  runVoltage(-Constants.autoZeroVoltage);
                   //                  System.out.println("Auto Zero: Wait until done or timeout");
                 },
                 this),
-            Commands.waitSeconds(ClimberConstants.autoZeroMaxRetractTimeInSeconds)
+            Commands.waitSeconds(Constants.autoZeroMaxRetractTimeInSeconds)
                 .until(() -> (isAutoZeroed())))
         .finallyDo(
             () -> {
@@ -315,9 +325,9 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
         new InstantCommand(
             () ->
                 overridePosition(
-                    ClimberConstants.maxPositionInRadians,
-                    ClimberConstants.maxPositionInRadians
-                        - ClimberConstants.matchStartPositionRadiansRight),
+                    Climber.Constants.maxPositionInRadians,
+                    Climber.Constants.maxPositionInRadians
+                        - Constants.matchStartPositionRadiansRight),
             this), // Fake the climber into thinking the left is maxed out, and the right is almost
         // maxed
         getExtendCommand(), // Extend the arm (left should stay stationary....right should extend to
@@ -326,15 +336,14 @@ public class ClimberSubsystem extends SubsystemBase implements Climber {
             () ->
                 overridePosition(
                     0,
-                    ClimberConstants
-                        .matchStartPositionRadiansRight))); // set positions back to what they
+                    Constants.matchStartPositionRadiansRight))); // set positions back to what they
     // really are
   }
 
   public Command getPrepareClimberForMatchStartCommand() {
     return new SequentialCommandGroup(
         new InstantCommand(
-            () -> overridePosition(0, ClimberConstants.matchStartPositionRadiansRight),
+            () -> overridePosition(0, Constants.matchStartPositionRadiansRight),
             this), // set positions back to what they are assuming the arm is being held up
         getRetractCommand()); // retract the right arm back to zero
   }

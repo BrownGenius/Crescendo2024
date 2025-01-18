@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.config.RobotConfig.ArmConstants;
 import frc.robot.util.DevilBotState;
 import frc.robot.util.DevilBotState.State;
 import frc.robot.util.LoggedTunableNumber;
@@ -21,14 +20,45 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
+  public static class Constants {
+    public static double absolutePositionOffset = 0; /* 0-1 */
+    public static double absoluteEncoderInversion = 1; /* 1 for none, -1 to invert */
+
+    public static double pidMaxOutput = 0.4;
+    public static double pidMinOutput = -0.4;
+    public static double pidAngleErrorInDegrees = 2.0;
+    public static double pidSettlingTimeInSeconds = 0.1;
+    public static double pidTimeoutInSeconds = 3.0;
+
+    public static double intakeAngleInDegrees = 1;
+    public static double ejectAngleInDegrees = 15;
+    public static double ampScoreAngleInDegrees = 80;
+    public static double subwooferScoreAngleInDegrees = 10;
+    public static double subwooferScoreFromPodiumAngleInDegrees = 20;
+    public static double noteScoreAngleInDegrees = 25;
+    public static double stowIntakeAngleInDegrees = 15;
+    public static double matchStartArmAngle = 90;
+
+    public static double maxBacklashDegrees = 0.0;
+
+    // Arm Angle Calculations
+    // Polynomial: y = a*x^2 + b*x + c
+    //   y = angle and x = distance
+    public static double minDistanceInMeters = 0; // min distance we can aim at
+    public static double maxDistanceInMeters = 3.0; // max distance we can aim at
+    public static double Ax2 = 0;
+    public static double Bx = (Arm.Constants.maxAngleInDegrees / 2) / maxDistanceInMeters;
+    public static double C = 0;
+  }
+
   private final ArmIO io;
   private final ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
   private ArmFeedforward feedforward =
       new ArmFeedforward(
-          ArmConstants.ffKs, ArmConstants.ffKg, ArmConstants.ffKv, ArmConstants.ffKa);
+          Arm.Constants.ffKs, Arm.Constants.ffKg, Arm.Constants.ffKv, Arm.Constants.ffKa);
   private final SysIdRoutine sysId;
-  private final double positionDegreeMax = ArmConstants.maxAngleInDegrees;
-  private final double positionDegreeMin = ArmConstants.minAngleInDegrees;
+  private final double positionDegreeMax = Arm.Constants.maxAngleInDegrees;
+  private final double positionDegreeMin = Arm.Constants.minAngleInDegrees;
   @AutoLogOutput private double targetVoltage;
   @AutoLogOutput private double targetDegrees;
   @AutoLogOutput private double targetRelativeDegrees;
@@ -63,21 +93,21 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   public ArmSubsystem(ArmIO io) {
     super(
         new TrapezoidProfile.Constraints(
-            ArmConstants.maxVelocityInDegreesPerSecond,
-            ArmConstants.maxAccelerationInDegreesPerSecondSquared));
+            Arm.Constants.maxVelocityInDegreesPerSecond,
+            Arm.Constants.maxAccelerationInDegreesPerSecondSquared));
     this.io = io;
 
-    armKp.initDefault(ArmConstants.pidKp);
-    armKd.initDefault(ArmConstants.pidKd);
-    armKg.initDefault(ArmConstants.ffKg);
-    armKv.initDefault(ArmConstants.ffKv);
-    armKa.initDefault(ArmConstants.ffKa);
-    armKs.initDefault(ArmConstants.ffKs);
-    armOutputMax.initDefault(ArmConstants.pidMaxOutput);
-    armOutputMin.initDefault(ArmConstants.pidMinOutput);
+    armKp.initDefault(Arm.Constants.pidKp);
+    armKd.initDefault(Arm.Constants.pidKd);
+    armKg.initDefault(Arm.Constants.ffKg);
+    armKv.initDefault(Arm.Constants.ffKv);
+    armKa.initDefault(Arm.Constants.ffKa);
+    armKs.initDefault(Arm.Constants.ffKs);
+    armOutputMax.initDefault(ArmSubsystem.Constants.pidMaxOutput);
+    armOutputMin.initDefault(ArmSubsystem.Constants.pidMinOutput);
 
-    armMaxVelocity.initDefault(ArmConstants.maxVelocityInDegreesPerSecond);
-    armMaxAccel.initDefault(ArmConstants.maxAccelerationInDegreesPerSecondSquared);
+    armMaxVelocity.initDefault(Arm.Constants.maxVelocityInDegreesPerSecond);
+    armMaxAccel.initDefault(Arm.Constants.maxAccelerationInDegreesPerSecondSquared);
 
     kG = armKg.get();
     kV = armKv.get();
@@ -141,7 +171,7 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   @Override
   public void setAngle(double degrees) {
     degrees =
-        MathUtil.clamp(degrees, ArmConstants.minAngleInDegrees, ArmConstants.maxAngleInDegrees);
+        MathUtil.clamp(degrees, Arm.Constants.minAngleInDegrees, Arm.Constants.maxAngleInDegrees);
 
     Logger.recordOutput("Arm/setAngle/requestedAngleDegress", degrees);
     // Don't try to set position if absolute encoder is broken/missing.
@@ -167,7 +197,8 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
     // } else {
     //   backlashCompensationDirection = 0;
     // }
-    this.targetRelativeDegrees += (backlashCompensationDirection * ArmConstants.maxBacklashDegrees);
+    this.targetRelativeDegrees +=
+        (backlashCompensationDirection * ArmSubsystem.Constants.maxBacklashDegrees);
 
     Logger.recordOutput("Arm/setAngle/setpointDegrees", this.targetRelativeDegrees);
     this.goalSetpointDegrees = this.targetRelativeDegrees;
@@ -181,8 +212,8 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   }
 
   public boolean isAbsoluteEncoderReadingValid() {
-    if (getAngle() > ArmConstants.minAngleInDegrees - 10
-        && getAngle() < ArmConstants.maxAngleInDegrees + 10) {
+    if (getAngle() > Arm.Constants.minAngleInDegrees - 10
+        && getAngle() < Arm.Constants.maxAngleInDegrees + 10) {
       return true;
     }
     return false;
@@ -299,7 +330,7 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   }
 
   private void stow() {
-    setAngle(ArmConstants.stowIntakeAngleInDegrees);
+    setAngle(ArmSubsystem.Constants.stowIntakeAngleInDegrees);
   }
 
   @Override
@@ -324,6 +355,6 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   @Override
   public boolean isAtSetpoint() {
     return (Math.abs(currentSetpointDegrees - goalSetpointDegrees)
-        < ArmConstants.pidAngleErrorInDegrees);
+        < ArmSubsystem.Constants.pidAngleErrorInDegrees);
   }
 }

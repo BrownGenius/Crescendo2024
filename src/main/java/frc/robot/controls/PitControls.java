@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.ArmConstants;
-import frc.robot.config.RobotConfig.ClimberConstants;
-import frc.robot.config.RobotConfig.IntakeConstants;
-import frc.robot.config.RobotConfig.ShooterConstants;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class PitControls {
 
     GenericEntry intakeVolts =
         intakeStatusLayout
-            .add("Volts", IntakeConstants.defaultSpeedInVolts)
+            .add("Volts", Intake.Constants.defaultSpeedInVolts)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", -12, "max", 12))
             .withPosition(layoutColIndex, layoutRowIndex++)
@@ -82,7 +82,7 @@ public class PitControls {
         new InstantCommand(
             () ->
                 RobotConfig.intake.runVoltage(
-                    intakeVolts.getDouble(IntakeConstants.defaultSpeedInVolts)),
+                    intakeVolts.getDouble(Intake.Constants.defaultSpeedInVolts)),
             RobotConfig.intake);
     intakeOn.setName("On");
     commands.add(intakeOn);
@@ -118,7 +118,7 @@ public class PitControls {
 
     GenericEntry armVolts =
         armStatusLayout
-            .add("Volts", ArmConstants.defaultSpeedInVolts)
+            .add("Volts", Arm.Constants.defaultSpeedInVolts)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", -12, "max", 12))
             .withPosition(layoutColIndex, layoutRowIndex++)
@@ -128,7 +128,7 @@ public class PitControls {
         .addDouble("Abs Angle (degrees)", () -> RobotConfig.arm.getAngle())
         .withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(
-            Map.of("min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+            Map.of("min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
         //        .withSize(maxWidth, 1)
         .withPosition(layoutColIndex, layoutRowIndex++);
 
@@ -136,7 +136,7 @@ public class PitControls {
         .addDouble("Rel Angle (degrees)", () -> RobotConfig.arm.getRelativeAngle())
         .withWidget(BuiltInWidgets.kNumberBar)
         .withProperties(
-            Map.of("min", ArmConstants.minAngleInDegrees, "max", ArmConstants.maxAngleInDegrees))
+            Map.of("min", Arm.Constants.minAngleInDegrees, "max", Arm.Constants.maxAngleInDegrees))
         //        .withSize(maxWidth, 1)
         .withPosition(layoutColIndex, layoutRowIndex++);
 
@@ -166,7 +166,7 @@ public class PitControls {
 
     Command armOn =
         new InstantCommand(
-            () -> RobotConfig.arm.runVoltage(armVolts.getDouble(ArmConstants.defaultSpeedInVolts)),
+            () -> RobotConfig.arm.runVoltage(armVolts.getDouble(Arm.Constants.defaultSpeedInVolts)),
             RobotConfig.arm);
     armOn.setName("On");
     commands.add(armOn);
@@ -175,7 +175,7 @@ public class PitControls {
     Command PrepareArmForMatch =
         new SequentialCommandGroup(
             RobotConfig.climber.getAutoZeroCommand(),
-            new ArmToPosition(RobotConfig.arm, () -> ArmConstants.matchStartArmAngle),
+            new ArmToPosition(RobotConfig.arm, () -> Arm.Constants.matchStartArmAngle),
             RobotConfig.climber.getPrepareClimberToHoldArmCommand(),
             new InstantCommand(() -> DevilBotState.climberNeedsToBeZeroedAtStart = true));
     PrepareArmForMatch.setName("Prepare Arm For Match");
@@ -214,7 +214,7 @@ public class PitControls {
     // Create volt entry under Shooter tab as a number sider with min = -1 and max = 1
     GenericEntry shooterVolts =
         shooterStatusLayout
-            .add("Volts", ShooterConstants.defaultSpeedInVolts)
+            .add("Volts", Shooter.Constants.defaultSpeedInVolts)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", -12, "max", 12))
             .withPosition(layoutColIndex, layoutRowIndex++)
@@ -224,7 +224,7 @@ public class PitControls {
             "Velocity (RPMs)",
             () -> Units.radiansPerSecondToRotationsPerMinute(RobotConfig.shooter.getCurrentSpeed()))
         .withWidget(BuiltInWidgets.kNumberBar)
-        .withProperties(Map.of("min", 0, "max", ShooterConstants.maxVelocityInRPM))
+        .withProperties(Map.of("min", 0, "max", Shooter.Constants.maxVelocityInRPM))
         .withPosition(layoutColIndex, layoutRowIndex++);
 
     ShuffleboardLayout shooterCommandLayout =
@@ -244,7 +244,7 @@ public class PitControls {
         new InstantCommand(
             () ->
                 RobotConfig.shooter.runVoltage(
-                    shooterVolts.getDouble(ShooterConstants.defaultSpeedInVolts)),
+                    shooterVolts.getDouble(Shooter.Constants.defaultSpeedInVolts)),
             RobotConfig.shooter);
     shooterOn.setName("On");
     commands.add(shooterOn);
@@ -281,7 +281,7 @@ public class PitControls {
 
     GenericEntry climberVolts =
         climberLowLevelStatusLayout
-            .add("Volts", ClimberConstants.defaultSpeedInVolts)
+            .add("Volts", Climber.Constants.defaultSpeedInVolts)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", 0, "max", 12))
             .withPosition(layoutColIndex, layoutRowIndex++)
@@ -300,7 +300,7 @@ public class PitControls {
             () -> {
               RobotConfig.climber.enableLimits(false);
               RobotConfig.climber.runVoltageLeft(
-                  climberVolts.getDouble(ClimberConstants.defaultSpeedInVolts));
+                  climberVolts.getDouble(Climber.Constants.defaultSpeedInVolts));
             },
             RobotConfig.climber);
     climberLeftUp.setName("L Up");
@@ -311,7 +311,7 @@ public class PitControls {
             () -> {
               RobotConfig.climber.enableLimits(false);
               RobotConfig.climber.runVoltageRight(
-                  climberVolts.getDouble(ClimberConstants.defaultSpeedInVolts));
+                  climberVolts.getDouble(Climber.Constants.defaultSpeedInVolts));
             },
             RobotConfig.climber);
     climberRightUp.setName("R Up");
@@ -322,7 +322,7 @@ public class PitControls {
             () -> {
               RobotConfig.climber.enableLimits(false);
               RobotConfig.climber.runVoltageLeft(
-                  -climberVolts.getDouble(ClimberConstants.defaultSpeedInVolts));
+                  -climberVolts.getDouble(Climber.Constants.defaultSpeedInVolts));
             },
             RobotConfig.climber);
     climberLeftDown.setName("L Down");
@@ -333,7 +333,7 @@ public class PitControls {
             () -> {
               RobotConfig.climber.enableLimits(false);
               RobotConfig.climber.runVoltageRight(
-                  -climberVolts.getDouble(ClimberConstants.defaultSpeedInVolts));
+                  -climberVolts.getDouble(Climber.Constants.defaultSpeedInVolts));
             },
             RobotConfig.climber);
     climberRightDown.setName("R Down");
@@ -376,13 +376,13 @@ public class PitControls {
     climberStatusLayout
         .addDouble("L Position", () -> RobotConfig.climber.getCurrentPositionLeft())
         .withWidget(BuiltInWidgets.kNumberBar)
-        .withProperties(Map.of("min", 0, "max", ClimberConstants.maxPositionInRadians))
+        .withProperties(Map.of("min", 0, "max", Climber.Constants.maxPositionInRadians))
         .withPosition(layoutColIndex++, layoutRowIndex);
 
     climberStatusLayout
         .addDouble("R Position", () -> RobotConfig.climber.getCurrentPositionRight())
         .withWidget(BuiltInWidgets.kNumberBar)
-        .withProperties(Map.of("min", 0, "max", ClimberConstants.maxPositionInRadians))
+        .withProperties(Map.of("min", 0, "max", Climber.Constants.maxPositionInRadians))
         .withPosition(layoutColIndex, layoutRowIndex++);
     layoutColIndex = 0;
 

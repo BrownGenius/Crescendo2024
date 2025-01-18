@@ -3,7 +3,6 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.config.RobotConfig.IntakeConstants;
 import frc.robot.subsystems.intake.Intake;
 import java.util.function.DoubleSupplier;
 
@@ -31,7 +30,7 @@ public class AutoIndexPiece extends Command {
     if (intakeVoltage != null) {
       targetIntakeVoltage = intakeVoltage.getAsDouble();
     } else {
-      targetIntakeVoltage = IntakeConstants.defaultSpeedInVolts;
+      targetIntakeVoltage = Intake.Constants.defaultSpeedInVolts;
     }
   }
 

@@ -8,7 +8,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.config.RobotConfig.DriveConstants;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 public class DriveTrain extends DriveBase {
@@ -45,8 +44,8 @@ public class DriveTrain extends DriveBase {
         new DifferentialDriveKinematics(Units.inchesToMeters(24.0));
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
 
-    leftVelocity = wheelSpeeds.leftMetersPerSecond / DriveConstants.maxVelocityMetersPerSec;
-    rightVelocity = wheelSpeeds.rightMetersPerSecond / DriveConstants.maxVelocityMetersPerSec;
+    leftVelocity = wheelSpeeds.leftMetersPerSecond / Drive.Constants.maxVelocityMetersPerSec;
+    rightVelocity = wheelSpeeds.rightMetersPerSecond / Drive.Constants.maxVelocityMetersPerSec;
 
     differentialDrive.tankDrive(leftVelocity, rightVelocity);
   }
@@ -107,7 +106,7 @@ public class DriveTrain extends DriveBase {
    * @return speed in meter/sec
    */
   public double getMaxLinearSpeed() {
-    return DriveConstants.maxVelocityMetersPerSec;
+    return Drive.Constants.maxVelocityMetersPerSec;
   }
 
   /**
@@ -116,6 +115,6 @@ public class DriveTrain extends DriveBase {
    * @return speed in radian/sec
    */
   public double getMaxAngularSpeed() {
-    return DriveConstants.maxAngularVelocityRadiansSec;
+    return Drive.Constants.maxAngularVelocityRadiansSec;
   }
 }

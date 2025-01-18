@@ -15,13 +15,21 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.config.RobotConfig.ShooterConstants;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
+  public static class Constants {
+    public static double pidVelocityErrorInRPM = 300;
+    public static double pidSettlingTimeInSeconds = 0.1;
+    public static double pidTimeoutInSeconds = 2.0;
+
+    public static double velocityInRPM = 3000;
+    public static double ampScoreVelocityInRPM = 1000;
+  }
+
   ShooterIO io;
   private final SimpleMotorFeedforward feedforward;
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
@@ -40,13 +48,13 @@ public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
   public ShooterSubsystem(ShooterIO io) {
     super(
         new ProfiledPIDController(
-            ShooterConstants.pidKp,
-            ShooterConstants.pidKi,
-            ShooterConstants.pidKd,
+            Shooter.Constants.pidKp,
+            Shooter.Constants.pidKi,
+            Shooter.Constants.pidKd,
             new TrapezoidProfile.Constraints(
-                Units.rotationsPerMinuteToRadiansPerSecond(ShooterConstants.maxVelocityInRPM),
+                Units.rotationsPerMinuteToRadiansPerSecond(Shooter.Constants.maxVelocityInRPM),
                 Units.rotationsPerMinuteToRadiansPerSecond(
-                    ShooterConstants.maxAccelerationInRPMSquared))));
+                    Shooter.Constants.maxAccelerationInRPMSquared))));
 
     this.io = io;
     useSoftwarePidVelocityControl = !io.supportsHardwarePid();
@@ -61,7 +69,7 @@ public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
 
     feedforward =
         new SimpleMotorFeedforward(
-            ShooterConstants.ffKs, ShooterConstants.ffKv, ShooterConstants.ffKa);
+            Shooter.Constants.ffKs, Shooter.Constants.ffKv, Shooter.Constants.ffKa);
 
     targetVoltage = 0;
     targetVelocityRPM = 0.0;
@@ -106,14 +114,14 @@ public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
   public void runVoltage(double volts) {
     targetVoltage = volts;
     targetVelocityRadPerSec = 0;
-    this.targetVelocityRPM = ShooterConstants.maxVelocityInRPM * (volts / 12.0);
+    this.targetVelocityRPM = Shooter.Constants.maxVelocityInRPM * (volts / 12.0);
     disable(); // disable PID control
     io.setVoltage(targetVoltage);
   }
 
   @Override
   public void runVelocity(double velocityRPM) {
-    velocityRPM = MathUtil.clamp(velocityRPM, 0, ShooterConstants.maxVelocityInRPM);
+    velocityRPM = MathUtil.clamp(velocityRPM, 0, Shooter.Constants.maxVelocityInRPM);
     targetVoltage = -1;
     this.targetVelocityRPM = velocityRPM;
     targetVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(velocityRPM);
@@ -140,7 +148,7 @@ public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
 
     currentSimAngle -=
         (inputs.velocityRadPerSec
-                / Units.rotationsPerMinuteToRadiansPerSecond(ShooterConstants.maxVelocityInRPM))
+                / Units.rotationsPerMinuteToRadiansPerSecond(Shooter.Constants.maxVelocityInRPM))
             * 45;
 
     int angleOffset = 0;
@@ -184,6 +192,6 @@ public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
   @Override
   public boolean isAtSetpoint() {
     return (Math.abs(currentVelocitySetpointRPM - targetVelocityRPM)
-        < ShooterConstants.pidVelocityErrorInRPM);
+        < Constants.pidVelocityErrorInRPM);
   }
 }

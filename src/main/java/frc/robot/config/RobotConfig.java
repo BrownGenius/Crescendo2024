@@ -40,140 +40,6 @@ public class RobotConfig {
   public static List<VisionCamera> cameras;
   public static LedSystem led;
 
-  public static class DriveConstants {
-    public static double maxVelocityMetersPerSec = 4.5;
-    public static double maxAngularVelocityRadiansSec = 2 * Math.PI;
-
-    public static double rotatePidKp = 0.05;
-    public static double rotatePidKi = 0.0;
-    public static double rotatePidKd = 0.0;
-    public static double rotatePidErrorInDegrees = 2.0;
-    public static double pidTimeoutInSeconds = 0.5;
-    public static double pidSettlingTimeInSeconds = 0.1;
-
-    public static double slewRateLimiterX = 3;
-    public static double slewRateLimiterY = 3;
-    public static double slewRateLimiterAngle = 3;
-
-    public static double blueSpeakerX = 0.14;
-    public static double speakerY = 5.53;
-    public static double redSpeakerX = 16.54 - 0.14;
-  }
-
-  public static class ArmConstants {
-    // TODO: add a value to negate or not the abs encoder reading. On sherman values are pos, on
-    // inferno neg.
-
-    public static double absolutePositionOffset = 0; /* 0-1 */
-    public static double absoluteEncoderInversion = 1; /* 1 for none, -1 to invert */
-
-    public static double pidKp = 0.1;
-    public static double pidKi = 0.0;
-    public static double pidKd = 0.0;
-    public static double pidMaxOutput = 0.4;
-    public static double pidMinOutput = -0.4;
-
-    public static double ffKs = 0.0;
-    public static double ffKv = 0.0;
-    public static double ffKa = 0.0;
-    public static double ffKg = 0.1;
-
-    public static double pidAngleErrorInDegrees = 2.0;
-    public static double pidSettlingTimeInSeconds = 0.1;
-    public static double pidTimeoutInSeconds = 3.0;
-
-    public static double maxAngleInDegrees = 90.0;
-    public static double minAngleInDegrees = 0.0;
-    public static double maxVelocityInDegreesPerSecond = 45;
-    public static double maxAccelerationInDegreesPerSecondSquared = 120;
-
-    public static double intakeAngleInDegrees = 1;
-    public static double ejectAngleInDegrees = 15;
-    public static double ampScoreAngleInDegrees = 80;
-    public static double subwooferScoreAngleInDegrees = 10;
-    public static double subwooferScoreFromPodiumAngleInDegrees = 20;
-    public static double noteScoreAngleInDegrees = 25;
-    public static double stowIntakeAngleInDegrees = 15;
-    public static double matchStartArmAngle = 90;
-
-    public static double defaultSpeedInVolts = 1.0;
-
-    public static double maxBacklashDegrees = 0.0;
-
-    // Arm Angle Calculations
-    // Polynomial: y = a*x^2 + b*x + c
-    //   y = angle and x = distance
-    public static double minDistanceInMeters = 0; // min distance we can aim at
-    public static double maxDistanceInMeters = 3.0; // max distance we can aim at
-    public static double Ax2 = 0;
-    public static double Bx = (maxAngleInDegrees / 2) / maxDistanceInMeters;
-    public static double C = 0;
-  }
-
-  public static class ShooterConstants {
-    /* Feedforward */
-    public static double ffKs = 0.088754;
-    public static double ffKv = 0.029757;
-    public static double ffKa = 0.01281;
-    public static double ffKsBottom = 0.11831;
-    public static double ffKvBottom = 0.029802;
-    public static double ffKaBottom = 0.019246;
-
-    /* PID */
-    public static double pidVelocityErrorInRPM = 300;
-    public static double pidSettlingTimeInSeconds = 0.1;
-    public static double pidTimeoutInSeconds = 2.0;
-    public static double pidKp = 0.043566;
-    public static double pidKi = 0.0;
-    public static double pidKd = 0.0;
-    public static double pidKpBottom = 0.04467;
-    public static double pidKiBottom = 0.0;
-    public static double pidKdBottom = 0.0;
-
-    public static double velocityInRPM = 3000;
-    public static double defaultSpeedInVolts = 6.0;
-    public static double ampScoreVelocityInRPM = 1000;
-    public static double maxVelocityInRPM = 4000;
-    public static double maxAccelerationInRPMSquared = maxVelocityInRPM * 4;
-  }
-
-  public static class IntakeConstants {
-    public static double defaultSpeedInVolts = 6.0;
-    public static double sensorDelayFalseToTrueInSeconds = 0.06;
-    public static double sensorDelayTrueToFalseInSeconds = 0.1;
-    public static double intakeTimeoutInSeconds = 2.0; // max time to wait for piece to be detected
-  }
-
-  public static class ClimberConstants {
-    public static double minPositionInRadians = 0.0;
-    public static double maxPositionInRadians = 4.0;
-    public static double defaultSpeedInVolts = 2.0;
-    public static double autoZeroVoltage = 2.0;
-    public static double autoZeroMaxCurrent = 16;
-    public static double autoZeroMinVelocity = 0.2;
-    public static double autoZeroExtendTimeInSeconds = 0.5;
-    public static double autoZeroMaxRetractTimeInSeconds = 5.0;
-    public static double autoZeroOffset =
-        -0.5; // When auto-zeroing, to reduce stress on the mechanism, this is the amount we want to
-    public static double matchStartPositionRadiansRight = 2.5;
-    // retract the climber after auto-zeroing
-    public static double maxExtendTimeInSeconds = 5.0;
-    public static double maxRetractTimeInSeconds = 8.0;
-  }
-
-  public static class LedConstants {
-    public static int Led1PWDPort = 0;
-    public static int Led1Length = 34;
-
-    public static int Led2PWDPort = 1;
-    public static int Led2Length = 60;
-  }
-
-  public static class VisionConstants {
-    public static double visionDistanceOffsetInMeters =
-        0; // Average difference between vision-calculated distance vs actual
-  }
-
   public Optional<Double> getArmAngleFromDistance(double distanceInMeters) {
     // Calculated using https://stats.blue/Stats_Suite/polynomial_regression_calculator.html
     // Based on empirical measurements done on 2024-04-03
@@ -181,13 +47,15 @@ public class RobotConfig {
 
     distanceInMeters =
         MathUtil.clamp(
-            distanceInMeters, ArmConstants.minDistanceInMeters, ArmConstants.maxDistanceInMeters);
+            distanceInMeters,
+            ArmSubsystem.Constants.minDistanceInMeters,
+            ArmSubsystem.Constants.maxDistanceInMeters);
 
     Optional<Double> angle =
         Optional.of(
-            ArmConstants.Ax2 * Math.pow(distanceInMeters, 2)
-                + ArmConstants.Bx * distanceInMeters
-                + ArmConstants.C);
+            ArmSubsystem.Constants.Ax2 * Math.pow(distanceInMeters, 2)
+                + ArmSubsystem.Constants.Bx * distanceInMeters
+                + ArmSubsystem.Constants.C);
 
     // System.out.println("getArmAngleFromDistance(" + distanceInMeters + ") = " + angle.get());
 

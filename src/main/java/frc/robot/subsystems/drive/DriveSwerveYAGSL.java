@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
-import frc.robot.config.RobotConfig.DriveConstants;
 import java.io.File;
 import java.util.Optional;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -41,15 +40,15 @@ public class DriveSwerveYAGSL extends DriveBase {
     try {
       swerveDrive =
           new SwerveParser(swerveJsonDirectory)
-              .createSwerveDrive(DriveConstants.maxVelocityMetersPerSec);
+              .createSwerveDrive(Drive.Constants.maxVelocityMetersPerSec);
       swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation);
 
       swerveDrive
           .getSwerveController()
           .addSlewRateLimiters(
-              new SlewRateLimiter(DriveConstants.slewRateLimiterX),
-              new SlewRateLimiter(DriveConstants.slewRateLimiterY),
-              new SlewRateLimiter(DriveConstants.slewRateLimiterAngle));
+              new SlewRateLimiter(DriveBase.Constants.slewRateLimiterX),
+              new SlewRateLimiter(DriveBase.Constants.slewRateLimiterY),
+              new SlewRateLimiter(DriveBase.Constants.slewRateLimiterAngle));
 
       swerveDrive.setMotorIdleMode(true);
     } catch (Exception e) {

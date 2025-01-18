@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.config.RobotConfig.DriveConstants;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.DriveBase;
 import java.util.function.DoubleSupplier;
 
 public class DriveToYaw extends Command {
@@ -16,14 +16,14 @@ public class DriveToYaw extends Command {
   double targetYaw;
   PIDController turnPID =
       new PIDController(
-          DriveConstants.rotatePidKp, DriveConstants.rotatePidKi, DriveConstants.rotatePidKd);
+          Drive.Constants.rotatePidKp, Drive.Constants.rotatePidKi, Drive.Constants.rotatePidKd);
   Timer timer = new Timer();
 
   public DriveToYaw(Drive drive, DoubleSupplier yawDegrees) {
     this.drive = drive;
     this.yawDegrees = yawDegrees;
 
-    turnPID.setTolerance(DriveConstants.rotatePidErrorInDegrees);
+    turnPID.setTolerance(DriveBase.Constants.rotatePidErrorInDegrees);
     turnPID.enableContinuousInput(-180, 180);
     addRequirements((Subsystem) drive);
   }
@@ -55,7 +55,7 @@ public class DriveToYaw extends Command {
   @Override
   public boolean isFinished() {
     if (turnPID.atSetpoint()) {
-      if (timer.get() >= DriveConstants.pidSettlingTimeInSeconds) {
+      if (timer.get() >= DriveBase.Constants.pidSettlingTimeInSeconds) {
         return true;
       }
     } else {

@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.RobotConfig;
-import frc.robot.config.RobotConfig.VisionConstants;
 import frc.robot.util.DevilBotState;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +27,11 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSubsystem extends SubsystemBase implements Vision {
+  public static class Constants {
+    public static double visionDistanceOffsetInMeters =
+        0; // Average difference between vision-calculated distance vs actual
+  }
+
   private class VisionCameraImpl {
     private static int numCameras = 0;
     private final PhotonCamera camera;
@@ -222,7 +226,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
                   fieldLayout.getTagPose(target.getFiducialId()).get().getZ(),
                   -primaryCamera.getRobotToCamera().getRotation().getY(),
                   Units.degreesToRadians(target.getPitch()))
-              + VisionConstants.visionDistanceOffsetInMeters);
+              + Constants.visionDistanceOffsetInMeters);
     }
     return Optional.empty();
   }
