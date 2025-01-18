@@ -1,12 +1,11 @@
 package frc.robot.subsystems.intake;
 
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -27,18 +26,11 @@ public class IntakeIOSparkMax implements IntakeIO {
     encoder = leader.getEncoder();
 
     // leader motor is not inverted, and set follower motor to follow the leader
-    // leader.restoreFactoryDefaults();
-    // leader.setInverted(inverted);
-    // leader.setIdleMode(IdleMode.kBrake);
-    // leader.setSmartCurrentLimit(35);
-    // leader.burnFlash();
-
-    
-    leaderConfig
-      .inverted(inverted)
-      .idleMode(SparkBaseConfig.IdleMode.kBrake)
-      .smartCurrentLimit(35);
-    leader.configure(leaderConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    leaderConfig.inverted(inverted).idleMode(SparkBaseConfig.IdleMode.kBrake).smartCurrentLimit(35);
+    leader.configure(
+        leaderConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
   }
 
   @Override

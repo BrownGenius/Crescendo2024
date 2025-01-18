@@ -1,12 +1,11 @@
 package frc.robot.subsystems.shooter;
 
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.util.Units;
 
 public class ShooterIOSparkMax implements ShooterIO {
@@ -23,27 +22,20 @@ public class ShooterIOSparkMax implements ShooterIO {
 
   public ShooterIOSparkMax(int id) {
     flywheel = new SparkMax(id, MotorType.kBrushless);
-    // flywheel.restoreFactoryDefaults();
-
-    // flywheel.setInverted(false);
-
-    // flywheel.enableVoltageCompensation(12.0);
-    // flywheel.setSmartCurrentLimit(60, 40);
-    // flywheel.setSecondaryCurrentLimit(20000);
-
     // // Set motor to brake mode so shooter stops spinning immediately
-    // flywheel.setIdleMode(IdleMode.kBrake);
 
     // // Last thing we do is save all settings to flash on sparkmax
-    // flywheel.burnFlash();
 
     flyWheelConfig
-      .inverted(false)
-      .smartCurrentLimit(60, 40)
-      .secondaryCurrentLimit(20000)
-      .idleMode(SparkBaseConfig.IdleMode.kBrake);
+        .inverted(false)
+        .smartCurrentLimit(60, 40)
+        .secondaryCurrentLimit(20000)
+        .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
-    flywheel.configure(flyWheelConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    flywheel.configure(
+        flyWheelConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
     encoder = flywheel.getEncoder();
   }
 
