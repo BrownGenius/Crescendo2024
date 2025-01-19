@@ -1,11 +1,11 @@
-package frc.robot.commands.assist;
+package frc.robot.commands.game.crescendo2024.assist;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.arm.ArmToPosition;
-import frc.robot.commands.intake.IntakeOut;
+import frc.robot.commands.common.arm.ArmToPosition;
+import frc.robot.commands.common.intake.IntakeOut;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.intake.Intake;

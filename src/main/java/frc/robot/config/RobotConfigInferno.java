@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
-import frc.robot.commands.auto.AutoNamedCommands;
+import frc.robot.commands.game.crescendo2024.auto.AutoNamedCommands;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIOSparkMax;
 import frc.robot.subsystems.arm.ArmSubsystem;
@@ -40,7 +40,7 @@ public class RobotConfigInferno extends RobotConfig {
     Drive.Constants.rotatePidKi = 0.0;
     Drive.Constants.rotatePidKd = 0.0;
     DriveBase.Constants.rotatePidErrorInDegrees = 0.5;
-    DriveBase.Constants.pidTimeoutInSeconds = 0.5;
+    Drive.Constants.pidTimeoutInSeconds = 0.5;
     DriveBase.Constants.pidSettlingTimeInSeconds = 0.5;
 
     drive = new DriveSwerveYAGSL("yagsl/inferno");
@@ -111,7 +111,7 @@ public class RobotConfigInferno extends RobotConfig {
         24.24; // Empirically at reading practice field after running 2-note center
     ArmSubsystem.Constants.stowIntakeAngleInDegrees = 5.0;
     ArmSubsystem.Constants.matchStartArmAngle = 90;
-    ArmSubsystem.Constants.pidTimeoutInSeconds = 2.0;
+    Arm.Constants.pidTimeoutInSeconds = 2.0;
 
     ArmSubsystem.Constants.maxBacklashDegrees = 3.0;
 

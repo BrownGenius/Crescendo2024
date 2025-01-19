@@ -1,4 +1,4 @@
-package frc.robot.commands.debug;
+package frc.robot.commands.game.crescendo2024.debug;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;

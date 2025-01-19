@@ -1,11 +1,11 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.game.crescendo2024.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.arm.ArmToPosition;
-import frc.robot.commands.shooter.SetShooterVelocity;
+import frc.robot.commands.common.arm.ArmToPosition;
+import frc.robot.commands.common.shooter.SetShooterVelocity;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.shooter.Shooter;
 import java.util.function.DoubleSupplier;
