@@ -16,6 +16,7 @@ public interface Drive {
     public static double rotatePidKp = 0.05;
     public static double rotatePidKi = 0.0;
     public static double rotatePidKd = 0.0;
+    public static double pidTimeoutInSeconds = 0.5;
   }
 
   /**

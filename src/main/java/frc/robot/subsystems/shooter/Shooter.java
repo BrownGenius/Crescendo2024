@@ -17,6 +17,8 @@ public interface Shooter {
     public static double pidKp = 0.043566;
     public static double pidKi = 0.0;
     public static double pidKd = 0.0;
+    public static double pidTimeoutInSeconds = 2.0;
+
     public static double pidKpBottom = 0.04467;
     public static double pidKiBottom = 0.0;
     public static double pidKdBottom = 0.0;

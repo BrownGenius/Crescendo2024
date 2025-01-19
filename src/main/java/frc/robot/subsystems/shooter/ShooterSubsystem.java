@@ -24,7 +24,6 @@ public class ShooterSubsystem extends ProfiledPIDSubsystem implements Shooter {
   public static class Constants {
     public static double pidVelocityErrorInRPM = 300;
     public static double pidSettlingTimeInSeconds = 0.1;
-    public static double pidTimeoutInSeconds = 2.0;
 
     public static double velocityInRPM = 3000;
     public static double ampScoreVelocityInRPM = 1000;

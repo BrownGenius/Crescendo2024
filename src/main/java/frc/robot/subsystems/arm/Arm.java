@@ -17,6 +17,7 @@ public interface Arm extends Subsystem {
     public static double pidKp = 0.1;
     public static double pidKi = 0.0;
     public static double pidKd = 0.0;
+    public static double pidTimeoutInSeconds = 3.0;
 
     public static double ffKs = 0.0;
     public static double ffKv = 0.0;

@@ -28,7 +28,6 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
     public static double pidMinOutput = -0.4;
     public static double pidAngleErrorInDegrees = 2.0;
     public static double pidSettlingTimeInSeconds = 0.1;
-    public static double pidTimeoutInSeconds = 3.0;
 
     public static double intakeAngleInDegrees = 1;
     public static double ejectAngleInDegrees = 15;

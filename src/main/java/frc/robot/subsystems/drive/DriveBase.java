@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveBase extends SubsystemBase implements Drive {
   public static class Constants {
     public static double rotatePidErrorInDegrees = 2.0;
-    public static double pidTimeoutInSeconds = 0.5;
     public static double pidSettlingTimeInSeconds = 0.1;
 
     public static double slewRateLimiterX = 3;

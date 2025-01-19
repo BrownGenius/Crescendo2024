@@ -34,8 +34,9 @@ import frc.robot.commands.shooter.SetShooterVelocity;
 import frc.robot.config.RobotConfig;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.drive.DriveBase;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.vision.VisionCamera;
 import frc.robot.util.DevilBotState;
@@ -317,7 +318,7 @@ public class DriverControls {
                             new DriveToYaw(
                                     RobotConfig.drive,
                                     () -> DevilBotState.getVisionRobotYawToTarget())
-                                .withTimeout(DriveBase.Constants.pidTimeoutInSeconds))),
+                                .withTimeout(Drive.Constants.pidTimeoutInSeconds))),
                     () -> DevilBotState.isAmpMode())
                 .until(() -> driveOverride(mainController)));
 
@@ -325,7 +326,7 @@ public class DriverControls {
         .rightBumper()
         .onTrue(
             new SetShooterVelocity(RobotConfig.shooter, () -> DevilBotState.getShooterVelocity())
-                .withTimeout(ShooterSubsystem.Constants.pidTimeoutInSeconds) // turn on shooter
+                .withTimeout(Shooter.Constants.pidTimeoutInSeconds) // turn on shooter
             );
 
     mainController
@@ -351,7 +352,7 @@ public class DriverControls {
                 new SetShooterVelocity(
                         RobotConfig.shooter, () -> DevilBotState.getShooterVelocity())
                     .withTimeout(
-                        ShooterSubsystem.Constants
+                        Shooter.Constants
                             .pidTimeoutInSeconds), // set shooter velocity in case it's not already
                 // on
                 RobotConfig.intake.getTurnOnCommand())); // Shoot Note
@@ -484,7 +485,7 @@ public class DriverControls {
                 RobotConfig.intake.getTurnOffCommand(),
                 new SetShooterVelocity(
                         RobotConfig.shooter, () -> DevilBotState.getShooterVelocity())
-                    .withTimeout(ShooterSubsystem.Constants.pidTimeoutInSeconds), // turn on shooter
+                    .withTimeout(Shooter.Constants.pidTimeoutInSeconds), // turn on shooter
                 /* TODO: Use ArmToPositionTP instead of setting arm angle directly */
                 new InstantCommand(
                     () -> {
