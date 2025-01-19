@@ -1,4 +1,4 @@
-package frc.robot.config;
+package frc.robot.config.game.crescendo2024;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
 import frc.robot.commands.game.crescendo2024.auto.AutoNamedCommands;
+import frc.robot.config.RobotConfig;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIOSparkMax;
 import frc.robot.subsystems.arm.ArmSubsystem;
