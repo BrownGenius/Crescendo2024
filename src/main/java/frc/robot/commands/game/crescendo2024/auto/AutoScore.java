@@ -7,10 +7,10 @@ import frc.robot.Constants;
 import frc.robot.commands.common.arm.ArmToPosition;
 import frc.robot.commands.common.drive.DriveToYaw;
 import frc.robot.commands.common.shooter.SetShooterVelocity;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.interfaces.Arm;
+import frc.robot.subsystems.interfaces.Drive;
+import frc.robot.subsystems.interfaces.Intake;
+import frc.robot.subsystems.interfaces.Shooter;
 import java.util.function.DoubleSupplier;
 
 public class AutoScore extends SequentialCommandGroup {

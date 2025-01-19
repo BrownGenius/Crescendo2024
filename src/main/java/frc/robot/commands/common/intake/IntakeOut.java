@@ -2,7 +2,7 @@ package frc.robot.commands.common.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.interfaces.Intake;
 
 public class IntakeOut extends Command {
   Intake intake;

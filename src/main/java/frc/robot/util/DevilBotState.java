@@ -3,8 +3,8 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.config.RobotConfig;
-import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.implementations.arm.ArmSubsystem;
+import frc.robot.subsystems.implementations.shooter.ShooterSubsystem;
 import java.util.Optional;
 
 public class DevilBotState {

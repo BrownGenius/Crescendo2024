@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.common.arm.ArmToPosition;
 import frc.robot.commands.common.shooter.SetShooterVelocity;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.interfaces.Arm;
+import frc.robot.subsystems.interfaces.Shooter;
 import java.util.function.DoubleSupplier;
 
 public class AutoPrepareForScore extends SequentialCommandGroup {

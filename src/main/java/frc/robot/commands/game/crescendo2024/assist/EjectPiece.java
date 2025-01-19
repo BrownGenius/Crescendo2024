@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.common.arm.ArmToPosition;
 import frc.robot.commands.common.intake.IntakeOut;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.implementations.arm.ArmSubsystem;
+import frc.robot.subsystems.interfaces.Arm;
+import frc.robot.subsystems.interfaces.Intake;
+import frc.robot.subsystems.interfaces.Shooter;
 
 public class EjectPiece extends SequentialCommandGroup {
 

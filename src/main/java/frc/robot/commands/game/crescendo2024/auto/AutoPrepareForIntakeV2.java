@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.commands.common.arm.ArmToPosition;
 import frc.robot.config.RobotConfig;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.implementations.arm.ArmSubsystem;
+import frc.robot.subsystems.implementations.intake.IntakeSubsystem;
+import frc.robot.subsystems.interfaces.Arm;
+import frc.robot.subsystems.interfaces.Intake;
 
 public class AutoPrepareForIntakeV2 extends SequentialCommandGroup {
   public AutoPrepareForIntakeV2(Arm arm, Intake intake) {

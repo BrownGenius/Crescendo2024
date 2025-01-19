@@ -4,10 +4,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.util.Units;
 import frc.robot.commands.game.crescendo2024.auto.AutoNamedCommands;
 import frc.robot.config.RobotConfig;
-import frc.robot.subsystems.arm.ArmSubsystem;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveBase;
-import frc.robot.subsystems.drive.DriveSwerveYAGSL;
+import frc.robot.subsystems.implementations.arm.ArmSubsystem;
+import frc.robot.subsystems.implementations.drive.DriveBase;
+import frc.robot.subsystems.implementations.drive.DriveSwerveYAGSL;
+import frc.robot.subsystems.interfaces.Drive;
 
 /* Override Phoenix specific constants here */
 public class RobotConfigPhoenix extends RobotConfig {

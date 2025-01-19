@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveBase;
+import frc.robot.subsystems.implementations.drive.DriveBase;
+import frc.robot.subsystems.interfaces.Drive;
 import java.util.function.DoubleSupplier;
 
 public class DriveToYaw extends Command {
