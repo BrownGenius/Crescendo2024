@@ -184,23 +184,23 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
 
     /*
-    Optional<Double> distance;
-    Optional<Double> yaw;
-    if (debugCurrentTargetId != DevilBotState.getActiveTargetId()) {
-      debugCurrentTargetId = DevilBotState.getActiveTargetId();
-      debugTargetDistance = 0;
-      debugTargetYaw = 0;
-      debugCurrentTargetName = DevilBotState.getTargetName(debugCurrentTargetId);
-    }
-    distance = getDistanceToAprilTag(debugCurrentTargetId);
-    yaw = getYawToAprilTag(debugCurrentTargetId);
-    if (distance.isPresent()) {
-      debugTargetDistance = distance.get();
-    }
-    if (yaw.isPresent()) {
-      debugTargetYaw = yaw.get();
-    }
-  */      
+      Optional<Double> distance;
+      Optional<Double> yaw;
+      if (debugCurrentTargetId != DevilBotState.getActiveTargetId()) {
+        debugCurrentTargetId = DevilBotState.getActiveTargetId();
+        debugTargetDistance = 0;
+        debugTargetYaw = 0;
+        debugCurrentTargetName = DevilBotState.getTargetName(debugCurrentTargetId);
+      }
+      distance = getDistanceToAprilTag(debugCurrentTargetId);
+      yaw = getYawToAprilTag(debugCurrentTargetId);
+      if (distance.isPresent()) {
+        debugTargetDistance = distance.get();
+      }
+      if (yaw.isPresent()) {
+        debugTargetYaw = yaw.get();
+      }
+    */
   }
 
   private PhotonTrackedTarget findAprilTag(int id) {
@@ -280,8 +280,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   }
 
   @Override
-  public void setVisionMeasurementConsumer(VisionMeasurementConsumer func)
-  {
+  public void setVisionMeasurementConsumer(VisionMeasurementConsumer func) {
     visionMeasurementConsumer = func;
-  }  
+  }
 }

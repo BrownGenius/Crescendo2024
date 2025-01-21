@@ -7,7 +7,7 @@ import frc.robot.subsystems.interfaces.Drive;
 /* Override Phoenix specific constants here */
 public class RobotConfigPhoenix extends RobotConfig {
   public RobotConfigPhoenix() {
-    super(false, true, true, true);
+    super(false, true, true);
 
     // Phoenix has a Swerve drive train
     Drive.Constants.rotatePidKp = 0.025;

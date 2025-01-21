@@ -6,7 +6,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.Command;
-import java.util.Optional;
 
 public interface Drive {
   public static class Constants {
@@ -83,8 +82,4 @@ public interface Drive {
 
   public default void addVisionMeasurement(
       Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {}
-
-  public default Optional<Double> getDistanceFromSpeaker() {
-    return Optional.empty();
-  }
 }

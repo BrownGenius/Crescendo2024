@@ -12,14 +12,12 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.io.interfaces.DriveIO;
 import frc.robot.io.interfaces.DriveIOInputsAutoLogged;
 import frc.robot.subsystems.interfaces.Drive;
 import java.io.File;
-import java.util.Optional;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import swervelib.SwerveDrive;
@@ -28,6 +26,12 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 
 public class DriveSwerveYAGSL extends DriveBase {
+  public static class Constants {
+    public static double slewRateLimiterX = 3;
+    public static double slewRateLimiterY = 3;
+    public static double slewRateLimiterAngle = 3;
+  }
+
   private final File swerveJsonDirectory;
   private SwerveDrive swerveDrive;
   @AutoLogOutput private boolean fieldOrientedDrive = false;
@@ -49,9 +53,9 @@ public class DriveSwerveYAGSL extends DriveBase {
       swerveDrive
           .getSwerveController()
           .addSlewRateLimiters(
-              new SlewRateLimiter(DriveBase.Constants.slewRateLimiterX),
-              new SlewRateLimiter(DriveBase.Constants.slewRateLimiterY),
-              new SlewRateLimiter(DriveBase.Constants.slewRateLimiterAngle));
+              new SlewRateLimiter(Constants.slewRateLimiterX),
+              new SlewRateLimiter(Constants.slewRateLimiterY),
+              new SlewRateLimiter(Constants.slewRateLimiterAngle));
 
       swerveDrive.setMotorIdleMode(true);
     } catch (Exception e) {
@@ -122,14 +126,17 @@ public class DriveSwerveYAGSL extends DriveBase {
     return swerveDrive.getMaximumChassisAngularVelocity();
   }
 
+  @Override
   public void setFieldOrientedDrive(boolean enable) {
     fieldOrientedDrive = enable;
   }
 
+  @Override
   public boolean isFieldOrientedDrive() {
     return fieldOrientedDrive;
   }
 
+  @Override
   public void resetOdometry() {
     swerveDrive.resetOdometry(new Pose2d());
   }
@@ -181,16 +188,6 @@ public class DriveSwerveYAGSL extends DriveBase {
   public void periodic() {
     io.updateInputs(inputs, swerveDrive);
     Logger.processInputs("Drive", inputs);
-    for (int i = 0; i < 4; i++) {
-      SmartDashboard.putNumber(
-          "mod" + i + "/getAbsolutePosition", swerveDrive.getModules()[i].getAbsolutePosition());
-      SmartDashboard.putNumber(
-          "mod" + i + "/getRawAbsolutePosition",
-          swerveDrive.getModules()[i].getRawAbsolutePosition());
-      SmartDashboard.putNumber(
-          "mod" + i + "/getAbsoluteEncoder().getAbsolutePosition",
-          swerveDrive.getModules()[i].getAbsoluteEncoder().getAbsolutePosition());
-    }
   }
 
   @Override
@@ -198,9 +195,5 @@ public class DriveSwerveYAGSL extends DriveBase {
       Pose2d robotPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
 
     swerveDrive.addVisionMeasurement(robotPose, timestamp, visionMeasurementStdDevs);
-  }
-
-  public Optional<Double> getDistanceFromSpeaker() {
-    return Optional.of(inputs.distanceFromSpeaker);
   }
 }

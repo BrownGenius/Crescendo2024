@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.subsystems.interfaces.Drive;
 import org.littletonrobotics.junction.AutoLogOutput;
 
-public class DriveTrain extends DriveBase {
+public class DriveDifferential extends DriveBase {
   // Define talons
   private static final WPI_TalonSRX leftMaster = new WPI_TalonSRX(10);
   private static final WPI_TalonSRX rightMaster = new WPI_TalonSRX(11);
@@ -27,7 +27,7 @@ public class DriveTrain extends DriveBase {
       new DifferentialDrive(leftMaster, rightMaster);
 
   /** Creates a new DriveTrain. */
-  public DriveTrain() {
+  public DriveDifferential() {
     setupTalons();
     resetEncoders();
   }

@@ -3,7 +3,7 @@ package frc.robot.commands.common.drive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.implementations.drive.DriveBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.interfaces.Drive;
 import frc.robot.util.DevilBotState;
 import java.util.Optional;
@@ -11,7 +11,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class DriveCommand extends Command {
-  DriveBase drive;
+  Drive drive;
   DoubleSupplier speedX;
   DoubleSupplier speedY;
   DoubleSupplier rot;
@@ -22,7 +22,7 @@ public class DriveCommand extends Command {
   PIDController turnPID;
 
   public DriveCommand(
-      DriveBase drive,
+      Drive drive,
       DoubleSupplier speedX,
       DoubleSupplier speedY,
       DoubleSupplier rot,
@@ -39,11 +39,11 @@ public class DriveCommand extends Command {
             Drive.Constants.rotatePidKp, Drive.Constants.rotatePidKi, Drive.Constants.rotatePidKd);
     turnPID.enableContinuousInput(0, 360);
 
-    addRequirements(drive);
+    addRequirements((SubsystemBase) drive);
   }
 
   public DriveCommand(
-      DriveBase drive, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot) {
+      Drive drive, DoubleSupplier speedX, DoubleSupplier speedY, DoubleSupplier rot) {
     this(drive, speedX, speedY, rot, () -> Optional.empty());
   }
 
@@ -77,7 +77,7 @@ public class DriveCommand extends Command {
     }
 
     /* Invert strafe controls if Field Oriented and on the Red Alliance */
-    if (DevilBotState.isFieldOriented() && DevilBotState.isRedAlliance()) {
+    if (drive.isFieldOrientedDrive() && (DevilBotState.isRedAlliance())) {
       xSpeed *= -1;
       ySpeed *= -1;
     }
