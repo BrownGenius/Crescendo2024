@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.common.arm.ArmToPosition;
 import frc.robot.commands.common.shooter.SetShooterVelocity;
 import frc.robot.commands.game.crescendo2024.debug.TestShooterAngle;
-import frc.robot.config.RobotConfig;
+import frc.robot.config.game.crescendo2024.RobotConfig;
 import frc.robot.subsystems.implementations.arm.ArmSubsystem;
 import frc.robot.subsystems.implementations.shooter.ShooterSubsystem;
 import frc.robot.subsystems.interfaces.Arm;

@@ -6,9 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.config.RobotConfig;
-import frc.robot.config.game.crescendo2024.RobotConfigInferno;
-import frc.robot.config.game.reefscape2025.RobotConfigPhoenix;
+import frc.robot.config.game.reefscape2025.*;
 import frc.robot.controls.DebugControls;
 import frc.robot.controls.DriverControls;
 import frc.robot.controls.PitControls;
@@ -17,7 +15,6 @@ import frc.robot.controls.SysIdControls;
 public class RobotContainer {
   public final RobotConfig robotConfig;
   private static final String robotNameKey = "Robot Name";
-  private Command autoCommand = null;
 
   public RobotContainer() {
     String robotName = "UNKNOWN";
@@ -28,9 +25,6 @@ public class RobotContainer {
     switch (robotName) {
       case "PHOENIX":
         robotConfig = new RobotConfigPhoenix();
-        break;
-      case "INFERNO":
-        robotConfig = new RobotConfigInferno();
         break;
       case "UNKNOWN":
       default:

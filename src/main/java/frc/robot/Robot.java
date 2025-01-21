@@ -6,9 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.config.RobotConfig;
-import frc.robot.util.DevilBotState;
-import frc.robot.util.DevilBotState.State;
+import frc.robot.config.game.reefscape2025.*;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -83,7 +81,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledInit() {
-    DevilBotState.setState(State.DISABLED);
   }
 
   @Override
@@ -94,8 +91,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
-    DevilBotState.setState(State.AUTO);
-
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
@@ -111,8 +106,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
-    DevilBotState.setState(State.TELEOP);
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -126,7 +119,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void testInit() {
-    DevilBotState.setState(State.TEST);
     CommandScheduler.getInstance().cancelAll();
   }
 

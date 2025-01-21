@@ -3,7 +3,7 @@ package frc.robot.controls;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.config.RobotConfig;
+import frc.robot.config.game.crescendo2024.RobotConfig;
 
 public class SysIdControls {
   public static void setupGUI() {

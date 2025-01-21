@@ -8,9 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.config.RobotConfig;
 import frc.robot.subsystems.interfaces.Vision;
-import frc.robot.util.DevilBotState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -94,13 +92,10 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   private final List<VisionCameraImpl> cameras = new ArrayList<VisionCameraImpl>();
   private VisionCameraImpl primaryCamera = null;
   private final AprilTagFieldLayout fieldLayout;
+  private VisionMeasurementConsumer visionMeasurementConsumer = null;
 
   /* Debug Info */
   @AutoLogOutput private int debugTargetsVisible;
-  @AutoLogOutput private int debugCurrentTargetId = DevilBotState.getActiveTargetId();
-
-  @AutoLogOutput
-  private String debugCurrentTargetName = DevilBotState.getTargetName(debugCurrentTargetId);
 
   @AutoLogOutput private double debugTargetDistance = 0;
   @AutoLogOutput private double debugTargetYaw = 0;
@@ -173,12 +168,13 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
         if (distanceToBestTarget.isPresent()) {
           double distance = distanceToBestTarget.get();
 
-          // Add vision measurement to the drivetrain.
-          // TODO: clean up this abstraction
-          RobotConfig.drive.addVisionMeasurement(
-              currentEstimatedRobotPose.get().estimatedPose.toPose2d(),
-              currentEstimatedRobotPose.get().timestampSeconds,
-              VecBuilder.fill(distance / 2, distance / 2, distance / 2));
+          // Add vision measurement to the consumer.
+          if (visionMeasurementConsumer != null) {
+            visionMeasurementConsumer.add(
+                currentEstimatedRobotPose.get().estimatedPose.toPose2d(),
+                currentEstimatedRobotPose.get().timestampSeconds,
+                VecBuilder.fill(distance / 2, distance / 2, distance / 2));
+          }
         }
 
         if (camera == primaryCamera) {
@@ -187,6 +183,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
       }
     }
 
+    /*
     Optional<Double> distance;
     Optional<Double> yaw;
     if (debugCurrentTargetId != DevilBotState.getActiveTargetId()) {
@@ -203,6 +200,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     if (yaw.isPresent()) {
       debugTargetYaw = yaw.get();
     }
+  */      
   }
 
   private PhotonTrackedTarget findAprilTag(int id) {
@@ -280,4 +278,10 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     }
     return foundCamera;
   }
+
+  @Override
+  public void setVisionMeasurementConsumer(VisionMeasurementConsumer func)
+  {
+    visionMeasurementConsumer = func;
+  }  
 }

@@ -15,9 +15,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.io.interfaces.ArmIO;
 import frc.robot.io.interfaces.ArmIOInputsAutoLogged;
 import frc.robot.subsystems.interfaces.Arm;
-import frc.robot.util.DevilBotState;
-import frc.robot.util.DevilBotState.State;
-import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.TrapezoidProfileSubsystem2876;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -72,24 +69,6 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   private final double armAngle2dOffset = 0;
   private MechanismLigament2d arm2d = null;
 
-  private static final LoggedTunableNumber armKp = new LoggedTunableNumber("Arm/pid/kP");
-  private static final LoggedTunableNumber armKd = new LoggedTunableNumber("Arm/pid/kD");
-
-  private static final LoggedTunableNumber armKg = new LoggedTunableNumber("Arm/pid/kG");
-  private static final LoggedTunableNumber armKv = new LoggedTunableNumber("Arm/pid/kV");
-  private static final LoggedTunableNumber armKa = new LoggedTunableNumber("Arm/pid/kA");
-  private static final LoggedTunableNumber armKs = new LoggedTunableNumber("Arm/pid/kS");
-
-  private static final LoggedTunableNumber armOutputMax =
-      new LoggedTunableNumber("Arm/pid/outputMax");
-  private static final LoggedTunableNumber armOutputMin =
-      new LoggedTunableNumber("Arm/pid/outputMin");
-
-  private static final LoggedTunableNumber armMaxVelocity =
-      new LoggedTunableNumber("Arm/constraints/maxVelocity");
-  private static final LoggedTunableNumber armMaxAccel =
-      new LoggedTunableNumber("Arm/constraints/minAccel");
-
   private double kG, kV, kA, kS;
 
   public ArmSubsystem(ArmIO io) {
@@ -99,22 +78,10 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
             Arm.Constants.maxAccelerationInDegreesPerSecondSquared));
     this.io = io;
 
-    armKp.initDefault(Arm.Constants.pidKp);
-    armKd.initDefault(Arm.Constants.pidKd);
-    armKg.initDefault(Arm.Constants.ffKg);
-    armKv.initDefault(Arm.Constants.ffKv);
-    armKa.initDefault(Arm.Constants.ffKa);
-    armKs.initDefault(Arm.Constants.ffKs);
-    armOutputMax.initDefault(ArmSubsystem.Constants.pidMaxOutput);
-    armOutputMin.initDefault(ArmSubsystem.Constants.pidMinOutput);
-
-    armMaxVelocity.initDefault(Arm.Constants.maxVelocityInDegreesPerSecond);
-    armMaxAccel.initDefault(Arm.Constants.maxAccelerationInDegreesPerSecondSquared);
-
-    kG = armKg.get();
-    kV = armKv.get();
-    kA = armKa.get();
-    kS = armKs.get();
+    kG = Arm.Constants.ffKg;
+    kV = Arm.Constants.ffKv;
+    kA = Arm.Constants.ffKa;
+    kS = Arm.Constants.ffKs;
 
     // Configure SysId based on the AdvantageKit example
     sysId =
@@ -246,31 +213,15 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem2876 implements Arm {
   @Override
   public void periodic() {
     super.periodic();
-    if (armKp.hasChanged(hashCode())
-        || armKd.hasChanged(hashCode())
-        || armOutputMin.hasChanged(hashCode())
-        || armOutputMax.hasChanged(hashCode())) {
-      io.setFeedback(armKp.get(), 0.0, armKd.get(), armOutputMin.get(), armOutputMax.get());
-    }
-    if (armKg.hasChanged(hashCode())) {
-      kG = armKg.get();
-    }
-    if (armKv.hasChanged(hashCode())) {
-      kV = armKv.get();
-    }
-    if (armKa.hasChanged(hashCode())) {
-      kA = armKa.get();
-    }
-    if (armKs.hasChanged(hashCode())) {
-      kS = armKs.get();
-    }
     // Updates the inputs
     io.updateInputs(inputs);
     Logger.processInputs("Arm", inputs);
 
+    /*
     if (DevilBotState.getState() == State.DISABLED && io.isAbsoluteEncoderConnected()) {
       io.resetRelativeEncoder(getAngle());
     }
+    */
 
     if (isLimitHigh() && inputs.appliedVolts > 0) {
       io.setVoltage(0);

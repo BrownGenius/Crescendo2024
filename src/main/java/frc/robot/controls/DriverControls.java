@@ -31,7 +31,7 @@ import frc.robot.commands.common.drive.DriveCommand;
 import frc.robot.commands.common.drive.DriveToYaw;
 import frc.robot.commands.common.shooter.SetShooterVelocity;
 import frc.robot.commands.game.crescendo2024.assist.EjectPiece;
-import frc.robot.config.RobotConfig;
+import frc.robot.config.game.crescendo2024.RobotConfig;
 import frc.robot.subsystems.implementations.arm.ArmSubsystem;
 import frc.robot.subsystems.implementations.shooter.ShooterSubsystem;
 import frc.robot.subsystems.implementations.vision.VisionCamera;

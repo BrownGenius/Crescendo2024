@@ -1,11 +1,20 @@
 package frc.robot.subsystems.interfaces;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+
 import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public interface Vision {
+  @FunctionalInterface
+  interface VisionMeasurementConsumer {
+    void add(Pose2d robotPose, double timestamp, Matrix<N3, N1> stdDevs);
+  }
+
   public class VisionPose {
     public static DecimalFormat doubleFormat = new DecimalFormat("0.00");
     public String cameraName;
@@ -83,4 +92,6 @@ public interface Vision {
   public Optional<Double> getYawToAprilTag(int id);
 
   public default void enableSimulation(Supplier<Pose2d> poseSupplier, boolean enableWireFrame) {}
+
+  public default void setVisionMeasurementConsumer(VisionMeasurementConsumer func) {}
 }
