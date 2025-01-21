@@ -87,7 +87,7 @@ public class RobotConfig {
 
   public void configureBindings() {
     // Send vision-based odometry measurements to drive's odometry calculations
-    //vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
+    vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
 
     DriveControls.setupMainControls(drive, mainController);
     DriveControls.addDriverGUI(drive, driverTab);
