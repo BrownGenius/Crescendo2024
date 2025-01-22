@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Robot;
-import frc.robot.controls.common.DriveControls;
+import frc.robot.subsystems.controls.drive.DriveControls;
 import frc.robot.subsystems.implementations.drive.DriveBase;
 import frc.robot.subsystems.implementations.vision.VisionCamera;
 import frc.robot.subsystems.implementations.vision.VisionSubsystem;
@@ -89,7 +89,7 @@ public class RobotConfig {
     // Send vision-based odometry measurements to drive's odometry calculations
     vision.setVisionMeasurementConsumer(drive::addVisionMeasurement);
 
-    DriveControls.setupMainControls(drive, mainController);
-    DriveControls.addDriverGUI(drive, driverTab);
+    DriveControls.setupController(drive, mainController);
+    DriveControls.addGUI(drive, driverTab);
   }
 }

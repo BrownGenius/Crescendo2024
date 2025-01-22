@@ -1,4 +1,4 @@
-package frc.robot.controls.common;
+package frc.robot.subsystems.controls.drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -11,7 +11,7 @@ import frc.robot.config.game.reefscape2025.RobotConfig;
 import frc.robot.subsystems.interfaces.Drive;
 
 public class DriveControls {
-  public static void setupMainControls(Drive drive, CommandXboxController controller) {
+  public static void setupController(Drive drive, CommandXboxController controller) {
     SubsystemBase driveSubsystem = (SubsystemBase) drive;
     driveSubsystem.setDefaultCommand(
         new DriveCommand(
@@ -38,7 +38,7 @@ public class DriveControls {
                 })); // Toggle Drive Orientation
   }
 
-  public static void addDriverGUI(Drive drive, ShuffleboardTab tab) {
+  public static void addGUI(Drive drive, ShuffleboardTab tab) {
     int colIndex = 0;
     int rowIndex = 0;
 
