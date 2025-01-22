@@ -41,9 +41,9 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     private PhotonPipelineResult result;
     private Optional<EstimatedRobotPose> estimatedRobotPose;
 
-    private VisionCameraImpl(VisionCamera camera, AprilTagFieldLayout fieldLayout) {
-      this.camera = new PhotonCamera(camera.name);
-      this.robotToCamera = camera.robotToCamera;
+    private VisionCameraImpl(Camera camera, AprilTagFieldLayout fieldLayout) {
+      this.camera = new PhotonCamera(camera.getName());
+      this.robotToCamera = camera.getRobotToCamera();
       this.poseEstimator =
           new PhotonPoseEstimator(
               fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, this.robotToCamera);
@@ -93,6 +93,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   private VisionCameraImpl primaryCamera = null;
   private final AprilTagFieldLayout fieldLayout;
   private VisionMeasurementConsumer visionMeasurementConsumer = null;
+  List<Camera> visionCameras = new ArrayList<Camera>();
 
   /* Debug Info */
   @AutoLogOutput private int debugTargetsVisible;
@@ -107,14 +108,23 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
   private VisionSystemSim simVision;
   private Supplier<Pose2d> simPoseSupplier;
 
-  public VisionSubsystem(List<VisionCamera> cameras, AprilTagFieldLayout fieldLayout) {
-    for (VisionCamera camera : cameras) {
-      this.cameras.add(new VisionCameraImpl(camera, fieldLayout));
-    }
+  public VisionSubsystem(AprilTagFieldLayout fieldLayout) {
     this.fieldLayout = fieldLayout;
-    if (0 != cameras.size()) {
+  }
+
+  @Override
+  public void addCamera(Camera camera) {
+    cameras.add(new VisionCameraImpl(camera, fieldLayout));
+    visionCameras.add(camera);
+
+    if (1 == cameras.size()) {
       primaryCamera = this.cameras.get(0);
     }
+  }
+
+  @Override
+  public List<Camera> getCameras() {
+    return visionCameras;
   }
 
   @Override

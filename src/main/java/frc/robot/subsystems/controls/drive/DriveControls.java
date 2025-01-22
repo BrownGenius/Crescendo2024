@@ -39,19 +39,19 @@ public class DriveControls {
   }
 
   public static void addGUI(Drive drive, ShuffleboardTab tab) {
-    int colIndex = 0;
-    int rowIndex = 0;
+    //    int colIndex = 0;
+    //    int rowIndex = 0;
 
     /* Autonomous Chooser */
     tab.add("Autononmous", RobotConfig.autoChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
-        .withPosition(colIndex, rowIndex++)
+        //        .withPosition(colIndex, rowIndex++)
         .withSize(2, 1);
 
     /* Field Oriented Drive Indicator */
     tab.addBoolean("Field Oriented", () -> drive.isFieldOrientedDrive())
         .withWidget(BuiltInWidgets.kBooleanBox)
-        .withPosition(colIndex, rowIndex++)
+        //      .withPosition(colIndex, rowIndex++)
         .withSize(2, 1);
   }
 }

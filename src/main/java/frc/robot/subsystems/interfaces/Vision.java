@@ -2,9 +2,11 @@ package frc.robot.subsystems.interfaces;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -14,7 +16,55 @@ public interface Vision {
     void add(Pose2d robotPose, double timestamp, Matrix<N3, N1> stdDevs);
   }
 
-  public class VisionPose {
+  public class Camera {
+    final String name;
+    /*
+     * Location of the camera view relative to the robot (in meters)
+     *
+     * Translation(x,y,z) - location of the camera relative to the center of the robot (in meters)
+     *    x +/- is forward/back from center
+     *    y +/- is left/right from center.
+     *    z is relative to the ground (and should be positive)
+     *  E.g. Translation(0.0, -0.5, 0.5) is 1/2 meter right of center and 1/2 meter above the ground
+     *
+     * Rotation(roll, pitch, yaw) - orientation of the camera view (in radians)
+     *    roll +/- is CCW/CW around x-axis (should generally be 0)
+     *    pitch +/- is down/up around y-axis (should generally be <= 0)
+     *    yaw +/- is left/right around the z-axis
+     *  E.g. Rotation(0, Units.degreesToRadians(-20), Units.degreesToRadians(-90)) is pitched up by 20 degrees, and facing to the right
+     */
+    final Transform3d robotToCamera;
+    final String port;
+
+    /**
+     * @param cameraName
+     * @param robotToCamera
+     * @param port
+     */
+    public Camera(String cameraName, String port, Transform3d robotToCamera) {
+      this.name = cameraName;
+      this.port = port;
+      this.robotToCamera = robotToCamera;
+    }
+
+    public Camera(String cameraName, Transform3d robotToCamera) {
+      this(cameraName, null, robotToCamera);
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String getPort() {
+      return port;
+    }
+
+    public Transform3d getRobotToCamera() {
+      return robotToCamera;
+    }
+  }
+
+  public class Pose {
     public static DecimalFormat doubleFormat = new DecimalFormat("0.00");
     public String cameraName;
     public Pose2d robotPose;
@@ -32,28 +82,28 @@ public interface Vision {
      *     taken from Timer.getFPGATimestamp() or similar sources.
      * @param cameraName // Name of camera this pose was calculated from
      */
-    public VisionPose(Pose2d robotPose, double timestamp, String cameraName) {
+    public Pose(Pose2d robotPose, double timestamp, String cameraName) {
       this.robotPose = robotPose;
       this.timestamp = timestamp;
       this.cameraName = cameraName;
     }
 
-    public VisionPose() {
+    public Pose() {
       this(new Pose2d(), -1, "");
     }
 
     @Override
     public String toString() {
       return "timestamp:"
-          + VisionPose.doubleFormat.format(timestamp)
+          + Pose.doubleFormat.format(timestamp)
           + " cameraName:"
           + cameraName
           + " pose2d:(x:"
-          + VisionPose.doubleFormat.format(robotPose.getX())
+          + Pose.doubleFormat.format(robotPose.getX())
           + " y: "
-          + VisionPose.doubleFormat.format(robotPose.getY())
+          + Pose.doubleFormat.format(robotPose.getY())
           + " yaw: "
-          + VisionPose.doubleFormat.format(robotPose.getRotation().getDegrees())
+          + Pose.doubleFormat.format(robotPose.getRotation().getDegrees())
           + ")";
     }
   }
@@ -93,4 +143,8 @@ public interface Vision {
   public default void enableSimulation(Supplier<Pose2d> poseSupplier, boolean enableWireFrame) {}
 
   public default void setVisionMeasurementConsumer(VisionMeasurementConsumer func) {}
+
+  public void addCamera(Camera camera);
+
+  public List<Camera> getCameras();
 }
