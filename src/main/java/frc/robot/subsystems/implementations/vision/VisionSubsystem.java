@@ -125,7 +125,7 @@ public class VisionSubsystem extends SubsystemBase implements Vision {
     for (VisionCameraImpl camera : cameras) {
       var cameraProp = new SimCameraProperties();
       cameraProp.setCalibration(800, 600, Rotation2d.fromDegrees(70));
-      //cameraProp.setCalibError(0.35, 0.10);
+      // cameraProp.setCalibError(0.35, 0.10);
       cameraProp.setFPS(120);
       cameraProp.setAvgLatencyMs(50);
       cameraProp.setLatencyStdDevMs(15);
