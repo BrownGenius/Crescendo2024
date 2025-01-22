@@ -22,7 +22,6 @@ import java.util.List;
 
 /* Put all constants here with reasonable defaults */
 public class RobotConfig {
-  public static RobotConfig instance;
   public static DriveBase drive;
   public static SendableChooser<Command> autoChooser;
   public static VisionSubsystem vision;
@@ -31,17 +30,16 @@ public class RobotConfig {
   // Controls
   public CommandXboxController mainController = new CommandXboxController(0);
   private final ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-  private final ShuffleboardTab pitTab = Shuffleboard.getTab("Pit");
-  private final ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-  private final ShuffleboardTab sysIdTestTab = Shuffleboard.getTab("SysId");
+
+  // private final ShuffleboardTab pitTab = Shuffleboard.getTab("Pit");
+  // private final ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+  // private final ShuffleboardTab sysIdTestTab = Shuffleboard.getTab("SysId");
 
   public RobotConfig() {
     this(true, true, true);
   }
 
   public RobotConfig(boolean stubDrive, boolean stubAuto, boolean stubVision) {
-    instance = this;
-
     if (stubDrive) {
       drive = new DriveBase();
     }
