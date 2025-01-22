@@ -25,7 +25,7 @@ public class RobotConfigPhoenix extends RobotConfig {
         new Camera(
             "photonvision",
             new Transform3d(
-                new Translation3d(-0.221, 0, .164),
+                new Translation3d(0.221, 0, .164),
                 new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(0)))));
   }
 }
